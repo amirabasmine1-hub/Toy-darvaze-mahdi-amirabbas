@@ -3,585 +3,181 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <meta name="theme-color" content="#1597e5">
   <title>پنل مدیریت | توی دروازه</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet"
-  >
-
   <style>
-    :root{
-      --blue:#1597e5;
-      --blue2:#62c8f7;
-      --sky:#eaf8ff;
-      --white:#fff;
-      --ink:#17324d;
-      --muted:#648097;
-      --line:#d9eef9;
-      --green:#24b47e;
-      --red:#e85c78;
-      --yellow:#f5ad32;
-      --shadow:0 18px 50px rgba(21,151,229,.12);
-      --radius:22px;
+    * {
+      box-sizing: border-box;
     }
 
-    *{
-      box-sizing:border-box;
+    body {
+      margin: 0;
+      font-family: Tahoma, Arial, sans-serif;
+      background: #eef8ff;
+      color: #17324d;
     }
 
-    html{
-      scroll-behavior:smooth;
+    .header {
+      background: linear-gradient(135deg, #0789dc, #39b7ff);
+      color: white;
+      padding: 25px;
+      box-shadow: 0 5px 20px #0001;
     }
 
-    body{
-      margin:0;
-      font-family:Vazirmatn,Tahoma,sans-serif;
-      color:var(--ink);
-      background:#f5fbff;
-      line-height:1.8;
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
     }
 
-    button,
-    input,
-    textarea,
-    select{
-      font:inherit;
+    .header h1 {
+      margin: 0 0 8px;
+      font-size: 28px;
     }
 
-    button{
-      cursor:pointer;
+    .header p {
+      margin: 0;
+      opacity: .9;
     }
 
-    .container{
-      width:min(1180px,92%);
-      margin:auto;
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 16px;
     }
 
-    /* HEADER */
-
-    .header{
-      background:
-        radial-gradient(circle at 90% 10%,#d9f5ff,transparent 30%),
-        linear-gradient(135deg,#ffffff,#edfaff);
-      border-bottom:1px solid var(--line);
-      padding:35px 0;
+    .status {
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: white;
+      box-shadow: 0 5px 20px #0000000d;
+      margin-bottom: 20px;
+      font-weight: bold;
     }
 
-    .header-inner{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
+    .status.ok {
+      color: #087a45;
     }
 
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:14px;
+    .status.error {
+      color: #c62828;
     }
 
-    .brand-icon{
-      width:65px;
-      height:65px;
-      border-radius:20px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(145deg,#48bdf0,#128bd3);
-      color:white;
-      font-size:32px;
-      box-shadow:0 15px 35px rgba(21,151,229,.2);
+    .grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 20px;
     }
 
-    .brand h1{
-      margin:0;
-      font-size:25px;
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 8px 30px #0000000d;
+      margin-bottom: 20px;
     }
 
-    .brand p{
-      margin:2px 0 0;
-      color:var(--muted);
-      font-size:12px;
+    .card h2 {
+      margin-top: 0;
     }
 
-    .status{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 13px;
-      border-radius:30px;
-      background:white;
-      border:1px solid var(--line);
-      font-size:12px;
-      font-weight:800;
-    }
-
-    .status-dot{
-      width:9px;
-      height:9px;
-      border-radius:50%;
-      background:var(--yellow);
-    }
-
-    .status.online .status-dot{
-      background:var(--green);
-      box-shadow:0 0 0 5px rgba(36,180,126,.1);
-    }
-
-    .status.offline .status-dot{
-      background:var(--red);
-    }
-
-    /* NAV */
-
-    .nav{
-      margin-top:25px;
-      display:flex;
-      gap:8px;
-      overflow:auto;
-      padding-bottom:3px;
-    }
-
-    .nav button{
-      border:1px solid var(--line);
-      background:white;
-      color:#56758b;
-      border-radius:14px;
-      padding:10px 15px;
-      font-weight:800;
-      white-space:nowrap;
-      transition:.2s;
-    }
-
-    .nav button:hover,
-    .nav button.active{
-      background:var(--blue);
-      color:white;
-      border-color:var(--blue);
-      transform:translateY(-2px);
-    }
-
-    /* MAIN */
-
-    main{
-      padding:40px 0 80px;
-    }
-
-    .section{
-      display:none;
-    }
-
-    .section.active{
-      display:block;
-      animation:fadeIn .3s ease;
-    }
-
-    @keyframes fadeIn{
-      from{
-        opacity:0;
-        transform:translateY(8px);
-      }
-      to{
-        opacity:1;
-        transform:none;
-      }
-    }
-
-    .section-title{
-      margin-bottom:25px;
-    }
-
-    .section-title h2{
-      margin:0 0 5px;
-      font-size:30px;
-    }
-
-    .section-title p{
-      margin:0;
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    /* DASHBOARD */
-
-    .stats{
-      display:grid;
-      grid-template-columns:repeat(4,1fr);
-      gap:18px;
-      margin-bottom:25px;
-    }
-
-    .stat{
-      background:white;
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      padding:23px;
-      box-shadow:0 10px 30px rgba(42,128,170,.06);
-    }
-
-    .stat-icon{
-      font-size:27px;
-    }
-
-    .stat b{
-      display:block;
-      font-size:32px;
-      color:var(--blue);
-      margin-top:8px;
-    }
-
-    .stat span{
-      color:var(--muted);
-      font-size:12px;
-    }
-
-    .dashboard-grid{
-      display:grid;
-      grid-template-columns:1.3fr .7fr;
-      gap:20px;
-    }
-
-    .panel{
-      background:white;
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      padding:25px;
-      box-shadow:0 10px 30px rgba(42,128,170,.06);
-    }
-
-    .panel h3{
-      margin-top:0;
-    }
-
-    .quick-actions{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:10px;
-    }
-
-    /* FORM */
-
-    .form-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:15px;
-    }
-
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    }
-
-    .field.full{
-      grid-column:1/-1;
-    }
-
-    .field label{
-      font-size:12px;
-      font-weight:800;
+    label {
+      display: block;
+      margin: 15px 0 7px;
+      font-weight: bold;
     }
 
     input,
-    textarea,
-    select{
-      width:100%;
-      border:1px solid var(--line);
-      background:#fbfeff;
-      color:var(--ink);
-      border-radius:13px;
-      padding:11px 13px;
-      outline:none;
+    textarea {
+      width: 100%;
+      border: 1px solid #d7e7f2;
+      border-radius: 12px;
+      padding: 13px;
+      font: inherit;
+      outline: none;
+      background: #fbfdff;
     }
 
-    textarea{
-      min-height:120px;
-      resize:vertical;
+    textarea {
+      min-height: 130px;
+      resize: vertical;
     }
 
     input:focus,
-    textarea:focus,
-    select:focus{
-      border-color:var(--blue);
-      box-shadow:0 0 0 4px rgba(21,151,229,.08);
+    textarea:focus {
+      border-color: #1296e5;
+      box-shadow: 0 0 0 3px #1296e51a;
     }
 
-    .actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:9px;
-      margin-top:18px;
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
     }
 
-    .btn{
-      border:0;
-      border-radius:13px;
-      padding:10px 16px;
-      font-weight:800;
-      transition:.2s;
+    .primary {
+      width: 100%;
+      margin-top: 18px;
+      background: #1296e5;
+      color: white;
     }
 
-    .btn:hover{
-      transform:translateY(-2px);
+    .primary:hover {
+      background: #087fc5;
     }
 
-    .primary{
-      background:var(--blue);
-      color:white;
+    .refresh {
+      background: #e8f6ff;
+      color: #087fc5;
+      margin-bottom: 15px;
     }
 
-    .secondary{
-      background:var(--sky);
-      color:var(--blue);
+    .news-item {
+      border: 1px solid #e1eef6;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 14px;
+      background: #fbfdff;
     }
 
-    .danger{
-      background:#fff0f3;
-      color:#d94767;
+    .news-item h3 {
+      margin: 0 0 8px;
+      color: #087fc5;
     }
 
-    .success{
-      background:#e9fbf4;
-      color:#16835c;
+    .news-date {
+      font-size: 12px;
+      color: #78909c;
+      margin-bottom: 10px;
     }
 
-    /* LIST */
-
-    .list{
-      margin-top:20px;
-      display:grid;
-      gap:12px;
+    .news-text {
+      line-height: 1.8;
+      white-space: pre-wrap;
     }
 
-    .item{
-      border:1px solid var(--line);
-      border-radius:17px;
-      padding:17px;
-      background:#fcfeff;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:15px;
+    .delete {
+      margin-top: 14px;
+      background: #fff0f0;
+      color: #c62828;
     }
 
-    .item-main{
-      min-width:0;
+    .empty {
+      text-align: center;
+      padding: 35px;
+      color: #78909c;
     }
 
-    .item-title{
-      font-weight:900;
-      margin-bottom:2px;
+    .loading {
+      text-align: center;
+      padding: 30px;
     }
 
-    .item-meta{
-      color:var(--muted);
-      font-size:11px;
-    }
-
-    .item-text{
-      color:#56758b;
-      font-size:12px;
-      margin-top:5px;
-      white-space:pre-wrap;
-    }
-
-    .item-actions{
-      display:flex;
-      gap:6px;
-      flex-shrink:0;
-    }
-
-    .icon-btn{
-      border:0;
-      border-radius:11px;
-      padding:8px 10px;
-      background:var(--sky);
-      color:var(--blue);
-      font-weight:800;
-    }
-
-    .icon-btn.delete{
-      background:#fff0f3;
-      color:#d94767;
-    }
-
-    .empty{
-      text-align:center;
-      padding:35px 15px;
-      border:1px dashed #b8ddec;
-      border-radius:17px;
-      color:var(--muted);
-    }
-
-    /* TABLE */
-
-    .table-wrap{
-      overflow:auto;
-      margin-top:20px;
-      border:1px solid var(--line);
-      border-radius:17px;
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      min-width:650px;
-      background:white;
-    }
-
-    th,
-    td{
-      padding:12px;
-      border-bottom:1px solid #eaf4f9;
-      text-align:center;
-      font-size:12px;
-    }
-
-    th{
-      color:var(--muted);
-      background:#f7fcff;
-    }
-
-    /* POLL */
-
-    .poll-box{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:18px;
-    }
-
-    .poll-option{
-      padding:25px;
-      border:1px solid var(--line);
-      border-radius:20px;
-      background:#fbfeff;
-      text-align:center;
-    }
-
-    .poll-number{
-      display:block;
-      font-size:38px;
-      font-weight:900;
-      color:var(--blue);
-    }
-
-    .poll-name{
-      color:var(--muted);
-      font-size:13px;
-    }
-
-    .bar{
-      height:9px;
-      background:#e9f5fa;
-      border-radius:20px;
-      overflow:hidden;
-      margin-top:15px;
-    }
-
-    .bar i{
-      display:block;
-      height:100%;
-      width:0;
-      background:linear-gradient(90deg,var(--blue),var(--blue2));
-      border-radius:20px;
-      transition:.4s;
-    }
-
-    /* INFO */
-
-    .notice{
-      padding:15px 18px;
-      background:var(--sky);
-      border:1px solid var(--line);
-      border-radius:15px;
-      color:#477087;
-      font-size:12px;
-      margin-bottom:20px;
-    }
-
-    /* TOAST */
-
-    .toast{
-      position:fixed;
-      bottom:25px;
-      left:50%;
-      transform:translate(-50%,20px);
-      opacity:0;
-      pointer-events:none;
-      background:#17324d;
-      color:white;
-      padding:11px 17px;
-      border-radius:14px;
-      box-shadow:var(--shadow);
-      z-index:1000;
-      font-size:12px;
-      font-weight:800;
-      transition:.25s;
-    }
-
-    .toast.show{
-      opacity:1;
-      transform:translate(-50%,0);
-    }
-
-    /* FOOTER */
-
-    footer{
-      text-align:center;
-      padding:25px;
-      color:var(--muted);
-      font-size:11px;
-    }
-
-    /* RESPONSIVE */
-
-    @media(max-width:900px){
-      .stats{
-        grid-template-columns:repeat(2,1fr);
-      }
-
-      .dashboard-grid{
-        grid-template-columns:1fr;
-      }
-    }
-
-    @media(max-width:650px){
-      .header-inner{
-        align-items:flex-start;
-        flex-direction:column;
-      }
-
-      .stats{
-        grid-template-columns:1fr 1fr;
-      }
-
-      .form-grid{
-        grid-template-columns:1fr;
-      }
-
-      .field.full{
-        grid-column:auto;
-      }
-
-      .poll-box{
-        grid-template-columns:1fr;
-      }
-
-      .item{
-        align-items:flex-start;
-        flex-direction:column;
-      }
-
-      .item-actions{
-        width:100%;
-      }
-
-      .item-actions button{
-        flex:1;
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -590,1807 +186,286 @@
 <body>
 
 <header class="header">
-  <div class="container">
-
-    <div class="header-inner">
-
-      <div class="brand">
-        <div class="brand-icon">⚽</div>
-
-        <div>
-          <h1>پنل مدیریت «توی دروازه»</h1>
-          <p>مدیریت اخبار، مسابقات، امتیازات و نظرسنجی</p>
-        </div>
-      </div>
-
-      <div class="status" id="firebaseStatus">
-        <i class="status-dot"></i>
-        <span>در حال اتصال...</span>
-      </div>
-
-    </div>
-
-    <nav class="nav">
-      <button class="active" data-section="dashboard">
-        📊 داشبورد
-      </button>
-
-      <button data-section="news">
-        📰 اخبار
-      </button>
-
-      <button data-section="matches">
-        ⚽ بازی‌ها
-      </button>
-
-      <button data-section="scores">
-        🏆 امتیازات
-      </button>
-
-      <button data-section="poll">
-        📊 نظرسنجی
-      </button>
-
-      <button data-section="derby">
-        🔥 دربی
-      </button>
-    </nav>
-
+  <div class="header-inner">
+    <h1>⚽ پنل مدیریت توی دروازه</h1>
+    <p>مدیریت اخبار سایت از طریق Cloudflare Worker</p>
   </div>
 </header>
 
+<main class="container">
 
-<main>
-<div class="container">
-
-
-<!-- ======================================================
-     DASHBOARD
-====================================================== -->
-
-<section class="section active" id="section-dashboard">
-
-  <div class="section-title">
-    <h2>📊 داشبورد</h2>
-    <p>وضعیت فعلی اطلاعات سایت</p>
+  <div id="status" class="status">
+    ⏳ در حال اتصال به سرور...
   </div>
 
-  <div class="stats">
+  <div class="grid">
 
-    <div class="stat">
-      <div class="stat-icon">📰</div>
-      <b id="statNews">—</b>
-      <span>خبر ثبت‌شده</span>
-    </div>
+    <section class="card">
+      <h2>📰 افزودن خبر</h2>
 
-    <div class="stat">
-      <div class="stat-icon">⚽</div>
-      <b id="statMatches">—</b>
-      <span>بازی ثبت‌شده</span>
-    </div>
+      <form id="newsForm">
 
-    <div class="stat">
-      <div class="stat-icon">🏆</div>
-      <b id="statScores">—</b>
-      <span>نتیجه ثبت‌شده</span>
-    </div>
-
-    <div class="stat">
-      <div class="stat-icon">📊</div>
-      <b id="statVotes">—</b>
-      <span>رأی نظرسنجی</span>
-    </div>
-
-  </div>
-
-
-  <div class="dashboard-grid">
-
-    <div class="panel">
-
-      <h3>⚡ دسترسی سریع</h3>
-
-      <div class="quick-actions">
-
-        <button class="btn primary" data-go="news">
-          📰 افزودن خبر
-        </button>
-
-        <button class="btn primary" data-go="matches">
-          ⚽ افزودن بازی
-        </button>
-
-        <button class="btn secondary" data-go="scores">
-          🏆 مشاهده امتیازات
-        </button>
-
-        <button class="btn secondary" data-go="poll">
-          📊 مدیریت نظرسنجی
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <div class="panel">
-
-      <h3>🔥 وضعیت Firebase</h3>
-
-      <p id="dashboardFirebase">
-        در حال بررسی اتصال...
-      </p>
-
-      <button
-        class="btn secondary"
-        id="refreshAll"
-      >
-        🔄 بروزرسانی اطلاعات
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ======================================================
-     NEWS
-====================================================== -->
-
-<section class="section" id="section-news">
-
-  <div class="section-title">
-    <h2>📰 مدیریت اخبار</h2>
-    <p>خبر جدید منتشر کن یا خبرهای قبلی را حذف کن.</p>
-  </div>
-
-  <div class="panel">
-
-    <form id="newsForm">
-
-      <div class="form-grid">
-
-        <div class="field">
-          <label>عنوان خبر</label>
-
-          <input
-            id="newsTitle"
-            required
-            placeholder="مثلاً: اولین خبر سایت 🎮"
-          >
-        </div>
-
-        <div class="field">
-          <label>تاریخ</label>
-
-          <input
-            id="newsDate"
-            placeholder="مثلاً: ۱۴۰۵/۰۷/۰۶"
-          >
-        </div>
-
-        <div class="field full">
-          <label>متن خبر</label>
-
-          <textarea
-            id="newsText"
-            required
-            placeholder="متن خبر را بنویس..."
-          ></textarea>
-        </div>
-
-      </div>
-
-      <div class="actions">
-
-        <button
-          class="btn primary"
-          type="submit"
-        >
-          ➕ انتشار خبر
-        </button>
-
-        <button
-          class="btn secondary"
-          type="button"
-          id="clearNewsForm"
-        >
-          پاک کردن
-        </button>
-
-      </div>
-
-    </form>
-
-  </div>
-
-
-  <div class="panel" style="margin-top:20px">
-
-    <h3>خبرهای موجود</h3>
-
-    <div
-      class="list"
-      id="newsList"
-    >
-      <div class="empty">
-        در حال دریافت اخبار...
-      </div>
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ======================================================
-     MATCHES
-====================================================== -->
-
-<section class="section" id="section-matches">
-
-  <div class="section-title">
-    <h2>⚽ مدیریت بازی‌ها</h2>
-    <p>بازی‌های انجام‌شده، زنده و آینده را مدیریت کن.</p>
-  </div>
-
-
-  <div class="panel">
-
-    <form id="matchForm">
-
-      <div class="form-grid">
-
-        <div class="field">
-          <label>تیم میزبان</label>
-
-          <input
-            id="matchHome"
-            required
-            placeholder="استقلال"
-          >
-        </div>
-
-        <div class="field">
-          <label>تیم مهمان</label>
-
-          <input
-            id="matchAway"
-            required
-            placeholder="سپاهان"
-          >
-        </div>
-
-        <div class="field">
-          <label>تاریخ</label>
-
-          <input
-            id="matchDate"
-            type="date"
-            required
-          >
-        </div>
-
-        <div class="field">
-          <label>ساعت</label>
-
-          <input
-            id="matchTime"
-            type="time"
-            required
-          >
-        </div>
-
-        <div class="field">
-          <label>نتیجه</label>
-
-          <input
-            id="matchResult"
-            placeholder="۲ - ۱"
-          >
-        </div>
-
-        <div class="field">
-          <label>وضعیت اولیه</label>
-
-          <select id="matchStatus">
-
-            <option value="upcoming">
-              آینده
-            </option>
-
-            <option value="live">
-              زنده
-            </option>
-
-            <option value="finished">
-              پایان‌یافته
-            </option>
-
-          </select>
-        </div>
-
-        <div class="field">
-          <label>مدت بازی به دقیقه</label>
-
-          <input
-            id="matchDuration"
-            type="number"
-            min="1"
-            value="110"
-          >
-        </div>
-
-      </div>
-
-      <div class="actions">
-
-        <button
-          class="btn primary"
-          type="submit"
-        >
-          ➕ ثبت بازی
-        </button>
-
-        <button
-          class="btn secondary"
-          type="button"
-          id="clearMatchForm"
-        >
-          پاک کردن
-        </button>
-
-      </div>
-
-    </form>
-
-  </div>
-
-
-  <div class="panel" style="margin-top:20px">
-
-    <h3>بازی‌های ثبت‌شده</h3>
-
-    <div
-      class="list"
-      id="matchesList"
-    >
-      <div class="empty">
-        در حال دریافت بازی‌ها...
-      </div>
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ======================================================
-     SCORES
-====================================================== -->
-
-<section class="section" id="section-scores">
-
-  <div class="section-title">
-    <h2>🏆 مدیریت امتیازات</h2>
-    <p>نتایج مسابقات «توی دروازه»</p>
-  </div>
-
-  <div class="panel">
-
-    <div class="table-wrap">
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>#</th>
-            <th>امیرعباس</th>
-            <th>مهدی</th>
-            <th>تاریخ</th>
-            <th>عملیات</th>
-          </tr>
-
-        </thead>
-
-        <tbody id="scoresTable">
-
-          <tr>
-            <td colspan="5">
-              در حال دریافت...
-            </td>
-          </tr>
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ======================================================
-     POLL
-====================================================== -->
-
-<section class="section" id="section-poll">
-
-  <div class="section-title">
-    <h2>📊 نظرسنجی</h2>
-    <p>نتایج نظرسنجی سایت را مشاهده و مدیریت کن.</p>
-  </div>
-
-  <div class="poll-box">
-
-    <div class="poll-option">
-
-      <span
-        class="poll-number"
-        id="pollAccuracy"
-      >
-        0
-      </span>
-
-      <span class="poll-name">
-        🎯 دقت
-      </span>
-
-      <div class="bar">
-        <i id="accuracyBar"></i>
-      </div>
-
-    </div>
-
-
-    <div class="poll-option">
-
-      <span
-        class="poll-number"
-        id="pollPower"
-      >
-        0
-      </span>
-
-      <span class="poll-name">
-        💨 قدرت
-      </span>
-
-      <div class="bar">
-        <i id="powerBar"></i>
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="panel" style="margin-top:20px">
-
-    <h3>⚙️ کنترل نظرسنجی</h3>
-
-    <div class="notice">
-      پاک کردن نتایج، رأی‌های ثبت‌شده را از دیتابیس حذف می‌کند.
-    </div>
-
-    <button
-      class="btn danger"
-      id="resetPoll"
-    >
-      🗑️ صفر کردن نتایج نظرسنجی
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- ======================================================
-     DERBY
-====================================================== -->
-
-<section class="section" id="section-derby">
-
-  <div class="section-title">
-    <h2>🔥 دربی دوستانه</h2>
-    <p>امتیاز رقابت دوستانه امیرعباس و مهدی</p>
-  </div>
-
-  <div class="poll-box">
-
-    <div class="poll-option">
-
-      <span
-        class="poll-number"
-        id="derbyAmirAdmin"
-      >
-        0
-      </span>
-
-      <span class="poll-name">
-        🔵 امیرعباس
-      </span>
-
-    </div>
-
-
-    <div class="poll-option">
-
-      <span
-        class="poll-number"
-        id="derbyMehdiAdmin"
-      >
-        0
-      </span>
-
-      <span class="poll-name">
-        🔴 مهدی
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="panel" style="margin-top:20px">
-
-    <h3>ویرایش مستقیم امتیاز</h3>
-
-    <div class="form-grid">
-
-      <div class="field">
-
-        <label>
-          امتیاز امیرعباس
-        </label>
-
+        <label for="title">عنوان خبر</label>
         <input
-          type="number"
-          id="adminDerbyAmir"
-          min="0"
-          value="0"
+          id="title"
+          type="text"
+          placeholder="مثلاً: اولین خبر سایت 🎮"
+          required
         >
 
-      </div>
-
-
-      <div class="field">
-
-        <label>
-          امتیاز مهدی
-        </label>
-
+        <label for="date">تاریخ</label>
         <input
-          type="number"
-          id="adminDerbyMehdi"
-          min="0"
-          value="0"
+          id="date"
+          type="text"
+          placeholder="مثلاً: ۸ مهر ۱۴۰۵"
         >
 
+        <label for="text">متن خبر</label>
+        <textarea
+          id="text"
+          placeholder="متن خبر را اینجا بنویس..."
+        ></textarea>
+
+        <button class="primary" type="submit">
+          ➕ افزودن خبر
+        </button>
+
+      </form>
+    </section>
+
+    <section class="card">
+
+      <h2>📋 اخبار سایت</h2>
+
+      <button class="refresh" id="refresh">
+        🔄 بروزرسانی اخبار
+      </button>
+
+      <div id="newsList">
+        <div class="loading">
+          ⏳ در حال دریافت اخبار...
+        </div>
       </div>
 
-    </div>
-
-    <div class="actions">
-
-      <button
-        class="btn primary"
-        id="saveDerby"
-      >
-        💾 ذخیره امتیاز
-      </button>
-
-      <button
-        class="btn danger"
-        id="resetDerby"
-      >
-        🗑️ صفر کردن
-      </button>
-
-    </div>
+    </section>
 
   </div>
 
-</section>
-
-
-</div>
 </main>
 
+<script>
+const API = "https://toy-darvaze.amirabasmine1.workers.dev";
 
-<footer>
-  ⚽ توی دروازه | پنل مدیریت Firebase
-</footer>
+const statusBox = document.getElementById("status");
+const newsList = document.getElementById("newsList");
+const newsForm = document.getElementById("newsForm");
 
-
-<div
-  class="toast"
-  id="toast"
-></div>
-
-
-<!-- ======================================================
-     FIREBASE
-====================================================== -->
-
-<script type="module">
-
-import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-
-import {
-  getFirestore,
-  collection,
-  doc,
-  getDocs,
-  getDoc,
-  addDoc,
-  setDoc,
-  deleteDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
-
-
-/* ==========================================================
-   FIREBASE CONFIG
-========================================================== */
-
-const firebaseConfig = {
-
-  apiKey:
-    "AIzaSyA-FJjxL6beXSjGjw2dFdY4AWvmV-dUKl4",
-
-  authDomain:
-    "toy-darvaze.firebaseapp.com",
-
-  projectId:
-    "toy-darvaze",
-
-  storageBucket:
-    "toy-darvaze.firebasestorage.app",
-
-  messagingSenderId:
-    "899786944597",
-
-  appId:
-    "1:899786944597:web:4ffc4f050b2b100ab4e4dc",
-
-  measurementId:
-    "G-PHJ0PC50KV"
-
-};
-
-
-const app =
-  initializeApp(firebaseConfig);
-
-const db =
-  getFirestore(app);
-
-
-/* ==========================================================
-   HELPERS
-========================================================== */
-
-const $ = selector =>
-  document.querySelector(selector);
-
-
-const $$ = selector =>
-  [...document.querySelectorAll(selector)];
-
-
-function escapeHtml(value){
-
-  return String(value ?? "").replace(
-    /[&<>"']/g,
-    char => ({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#039;"
-    }[char])
-  );
-
+function setStatus(message, type = "") {
+  statusBox.textContent = message;
+  statusBox.className = "status " + type;
 }
 
-
-function toast(message){
-
-  const el =
-    $("#toast");
-
-  el.textContent =
-    message;
-
-  el.classList.add("show");
-
-  clearTimeout(
-    window.toastTimer
-  );
-
-  window.toastTimer =
-    setTimeout(
-      () =>
-        el.classList.remove("show"),
-      2400
-    );
-
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
+async function loadNews() {
+  newsList.innerHTML = `
+    <div class="loading">
+      ⏳ در حال دریافت اخبار...
+    </div>
+  `;
 
-/* ==========================================================
-   FIREBASE STATUS
-========================================================== */
+  try {
+    const response = await fetch(API + "/news");
 
-async function testFirebase(){
-
-  try{
-
-    await getDocs(
-      collection(db,"news")
-    );
-
-    $("#firebaseStatus")
-      .classList.add("online");
-
-    $("#firebaseStatus span")
-      .textContent =
-      "Firebase متصل است";
-
-    $("#dashboardFirebase")
-      .textContent =
-      "🟢 اتصال به Firestore برقرار است.";
-
-  }catch(error){
-
-    console.error(error);
-
-    $("#firebaseStatus")
-      .classList.add("offline");
-
-    $("#firebaseStatus span")
-      .textContent =
-      "دسترسی رد شد";
-
-    $("#dashboardFirebase")
-      .innerHTML =
-      "🔴 اتصال برقرار است اما Firestore اجازه خواندن نمی‌دهد.";
-
-  }
-
-}
-
-testFirebase();
-
-
-/* ==========================================================
-   NAVIGATION
-========================================================== */
-
-$$(".nav button").forEach(button => {
-
-  button.onclick = () => {
-
-    const target =
-      button.dataset.section;
-
-    $$(".nav button")
-      .forEach(x =>
-        x.classList.remove("active")
-      );
-
-    button.classList.add("active");
-
-    $$(".section")
-      .forEach(section =>
-        section.classList.remove("active")
-      );
-
-    $(`#section-${target}`)
-      ?.classList.add("active");
-
-    window.scrollTo({
-      top:0,
-      behavior:"smooth"
-    });
-
-  };
-
-});
-
-
-$$("[data-go]").forEach(button => {
-
-  button.onclick = () => {
-
-    const target =
-      button.dataset.go;
-
-    $(`.nav button[data-section="${target}"]`)
-      ?.click();
-
-  };
-
-});
-
-
-/* ==========================================================
-   NEWS
-========================================================== */
-
-async function loadNews(){
-
-  const list =
-    $("#newsList");
-
-  list.innerHTML =
-    `<div class="empty">
-      در حال دریافت اخبار...
-    </div>`;
-
-  try{
-
-    const snapshot =
-      await getDocs(
-        collection(db,"news")
-      );
-
-    const items = [];
-
-    snapshot.forEach(item => {
-
-      items.push({
-        id:item.id,
-        ...item.data()
-      });
-
-    });
-
-    items.sort((a,b) =>
-      (b.createdAt?.seconds || 0) -
-      (a.createdAt?.seconds || 0)
-    );
-
-    $("#statNews")
-      .textContent =
-      items.length;
-
-
-    if(!items.length){
-
-      list.innerHTML =
-        `<div class="empty">
-          هنوز خبری ثبت نشده.
-        </div>`;
-
-      return;
-
+    if (!response.ok) {
+      throw new Error("خطا در دریافت اخبار");
     }
 
+    const data = await response.json();
 
-    list.innerHTML =
-      items.map(item => `
+    const documents = data.documents || [];
 
-        <div class="item">
-
-          <div class="item-main">
-
-            <div class="item-title">
-              ${escapeHtml(item.title)}
-            </div>
-
-            <div class="item-meta">
-              ${escapeHtml(item.date || "بدون تاریخ")}
-            </div>
-
-            <div class="item-text">
-              ${escapeHtml(item.text || "")}
-            </div>
-
-          </div>
-
-          <div class="item-actions">
-
-            <button
-              class="icon-btn delete"
-              data-delete-news="${item.id}"
-            >
-              🗑️ حذف
-            </button>
-
-          </div>
-
+    if (!documents.length) {
+      newsList.innerHTML = `
+        <div class="empty">
+          📰 هنوز خبری ثبت نشده است.
         </div>
+      `;
 
-      `).join("");
+      setStatus("✅ اتصال برقرار است؛ خبری وجود ندارد.", "ok");
+      return;
+    }
 
+    newsList.innerHTML = documents.map(doc => {
 
-    $$("[data-delete-news]")
-      .forEach(button => {
+      const id = doc.name.split("/").pop();
 
-        button.onclick =
-          async () => {
+      const title =
+        doc.fields?.title?.stringValue || "بدون عنوان";
 
-            if(
-              !confirm(
-                "این خبر حذف شود؟"
-              )
-            ){
-              return;
-            }
+      const text =
+        doc.fields?.text?.stringValue || "";
 
-            try{
+      const date =
+        doc.fields?.date?.stringValue || "";
 
-              await deleteDoc(
-                doc(
-                  db,
-                  "news",
-                  button.dataset.deleteNews
-                )
-              );
+      return `
+        <article class="news-item">
 
-              toast(
-                "خبر حذف شد 🗑️"
-              );
+          <h3>${escapeHTML(title)}</h3>
 
-              loadNews();
+          ${
+            date
+              ? `<div class="news-date">📅 ${escapeHTML(date)}</div>`
+              : ""
+          }
 
-            }catch(error){
+          <div class="news-text">
+            ${escapeHTML(text)}
+          </div>
 
-              console.error(error);
+          <button
+            class="delete"
+            onclick="deleteNews('${encodeURIComponent(id)}')"
+          >
+            🗑️ حذف خبر
+          </button>
 
-              toast(
-                "حذف خبر انجام نشد."
-              );
+        </article>
+      `;
 
-            }
+    }).join("");
 
-          };
+    setStatus(
+      `✅ اتصال موفق — ${documents.length} خبر دریافت شد.`,
+      "ok"
+    );
 
-      });
+  } catch (error) {
 
-  }catch(error){
-
-    console.error(error);
-
-    list.innerHTML =
-      `<div class="empty">
+    newsList.innerHTML = `
+      <div class="empty">
         ❌ دریافت اخبار ناموفق بود.
-      </div>`;
+        <br><br>
+        ${escapeHTML(error.message)}
+      </div>
+    `;
 
+    setStatus(
+      "❌ اتصال به Worker برقرار نشد.",
+      "error"
+    );
   }
-
 }
 
+newsForm.addEventListener("submit", async (event) => {
 
-$("#newsForm").onsubmit =
-  async event => {
+  event.preventDefault();
 
-    event.preventDefault();
+  const title = document.getElementById("title").value.trim();
+  const date = document.getElementById("date").value.trim();
+  const text = document.getElementById("text").value.trim();
 
-    const title =
-      $("#newsTitle").value.trim();
+  if (!title) {
+    alert("عنوان خبر را وارد کن.");
+    return;
+  }
 
-    const date =
-      $("#newsDate").value.trim();
+  setStatus("⏳ در حال اضافه کردن خبر...");
 
-    const text =
-      $("#newsText").value.trim();
+  try {
 
+    const response = await fetch(API + "/news", {
+      method: "POST",
 
-    if(!title || !text){
+      headers: {
+        "Content-Type": "application/json"
+      },
 
-      toast(
-        "عنوان و متن خبر لازم است."
-      );
-
-      return;
-
-    }
-
-
-    try{
-
-      await addDoc(
-        collection(db,"news"),
-        {
-          title,
-          date:
-            date ||
-            new Date()
-              .toLocaleDateString(
-                "fa-IR"
-              ),
-
-          text,
-
-          createdAt:
-            serverTimestamp()
-        }
-      );
-
-
-      $("#newsForm").reset();
-
-      toast(
-        "خبر منتشر شد 📰"
-      );
-
-      loadNews();
-
-    }catch(error){
-
-      console.error(error);
-
-      toast(
-        "انتشار خبر انجام نشد."
-      );
-
-    }
-
-  };
-
-
-$("#clearNewsForm").onclick =
-  () => {
-
-    $("#newsForm").reset();
-
-  };
-
-
-/* ==========================================================
-   MATCHES
-========================================================== */
-
-async function loadMatches(){
-
-  const list =
-    $("#matchesList");
-
-  list.innerHTML =
-    `<div class="empty">
-      در حال دریافت بازی‌ها...
-    </div>`;
-
-
-  try{
-
-    const snapshot =
-      await getDocs(
-        collection(db,"matches")
-      );
-
-    const items = [];
-
-    snapshot.forEach(item => {
-
-      items.push({
-        id:item.id,
-        ...item.data()
-      });
-
+      body: JSON.stringify({
+        title,
+        date,
+        text
+      })
     });
 
+    const data = await response.json();
 
-    $("#statMatches")
-      .textContent =
-      items.length;
-
-
-    if(!items.length){
-
-      list.innerHTML =
-        `<div class="empty">
-          هنوز بازی‌ای ثبت نشده.
-        </div>`;
-
-      return;
-
+    if (!response.ok) {
+      throw new Error(
+        data.error?.message ||
+        data.error ||
+        "افزودن خبر ناموفق بود."
+      );
     }
 
+    newsForm.reset();
 
-    items.sort((a,b) =>
-      String(a.date || "")
-        .localeCompare(
-          String(b.date || "")
-        )
+    setStatus(
+      "✅ خبر با موفقیت اضافه شد!",
+      "ok"
     );
 
+    await loadNews();
 
-    list.innerHTML =
-      items.map(item => `
+  } catch (error) {
 
-        <div class="item">
+    setStatus(
+      "❌ افزودن خبر انجام نشد: " + error.message,
+      "error"
+    );
+  }
+});
 
-          <div class="item-main">
+async function deleteNews(id) {
 
-            <div class="item-title">
-
-              ⚽
-              ${escapeHtml(item.home)}
-              ${escapeHtml(item.result || "—")}
-              ${escapeHtml(item.away)}
-
-            </div>
-
-            <div class="item-meta">
-
-              ${escapeHtml(item.date || "")}
-              |
-              ${escapeHtml(item.time || "")}
-              |
-              ${escapeHtml(item.status || "")}
-
-            </div>
-
-          </div>
-
-
-          <div class="item-actions">
-
-            <button
-              class="icon-btn delete"
-              data-delete-match="${item.id}"
-            >
-              🗑️ حذف
-            </button>
-
-          </div>
-
-        </div>
-
-      `).join("");
-
-
-    $$("[data-delete-match]")
-      .forEach(button => {
-
-        button.onclick =
-          async () => {
-
-            if(
-              !confirm(
-                "این بازی حذف شود؟"
-              )
-            ){
-              return;
-            }
-
-            try{
-
-              await deleteDoc(
-                doc(
-                  db,
-                  "matches",
-                  button.dataset.deleteMatch
-                )
-              );
-
-              toast(
-                "بازی حذف شد 🗑️"
-              );
-
-              loadMatches();
-
-            }catch(error){
-
-              console.error(error);
-
-              toast(
-                "حذف بازی انجام نشد."
-              );
-
-            }
-
-          };
-
-      });
-
-  }catch(error){
-
-    console.error(error);
-
-    list.innerHTML =
-      `<div class="empty">
-        ❌ دریافت بازی‌ها ناموفق بود.
-      </div>`;
-
+  if (!confirm("این خبر حذف شود؟")) {
+    return;
   }
 
-}
+  setStatus("⏳ در حال حذف خبر...");
 
+  try {
 
-$("#matchForm").onsubmit =
-  async event => {
-
-    event.preventDefault();
-
-
-    const data = {
-
-      home:
-        $("#matchHome")
-          .value
-          .trim(),
-
-      away:
-        $("#matchAway")
-          .value
-          .trim(),
-
-      date:
-        $("#matchDate")
-          .value,
-
-      time:
-        $("#matchTime")
-          .value,
-
-      result:
-        $("#matchResult")
-          .value
-          .trim(),
-
-      status:
-        $("#matchStatus")
-          .value,
-
-      durationMinutes:
-        Number(
-          $("#matchDuration")
-            .value
-        ) || 110,
-
-      createdAt:
-        serverTimestamp()
-
-    };
-
-
-    if(
-      !data.home ||
-      !data.away ||
-      !data.date ||
-      !data.time
-    ){
-
-      toast(
-        "اطلاعات بازی کامل نیست."
-      );
-
-      return;
-
-    }
-
-
-    try{
-
-      await addDoc(
-        collection(db,"matches"),
-        data
-      );
-
-      $("#matchForm")
-        .reset();
-
-      $("#matchDuration")
-        .value = 110;
-
-      toast(
-        "بازی ثبت شد ⚽"
-      );
-
-      loadMatches();
-
-    }catch(error){
-
-      console.error(error);
-
-      toast(
-        "ثبت بازی انجام نشد."
-      );
-
-    }
-
-  };
-
-
-$("#clearMatchForm").onclick =
-  () => {
-
-    $("#matchForm").reset();
-
-    $("#matchDuration")
-      .value = 110;
-
-  };
-
-
-/* ==========================================================
-   SCORES
-========================================================== */
-
-async function loadScores(){
-
-  const table =
-    $("#scoresTable");
-
-  table.innerHTML =
-    `<tr>
-      <td colspan="5">
-        در حال دریافت...
-      </td>
-    </tr>`;
-
-
-  try{
-
-    const snapshot =
-      await getDocs(
-        collection(db,"scores")
-      );
-
-    const items = [];
-
-    snapshot.forEach(item => {
-
-      items.push({
-        id:item.id,
-        ...item.data()
-      });
-
-    });
-
-
-    $("#statScores")
-      .textContent =
-      items.length;
-
-
-    if(!items.length){
-
-      table.innerHTML =
-        `<tr>
-          <td colspan="5">
-            هنوز نتیجه‌ای ثبت نشده.
-          </td>
-        </tr>`;
-
-      return;
-
-    }
-
-
-    items.sort((a,b) =>
-      (b.createdAt?.seconds || 0) -
-      (a.createdAt?.seconds || 0)
+    const response = await fetch(
+      API + "/news/" + id,
+      {
+        method: "DELETE"
+      }
     );
 
-
-    table.innerHTML =
-      items.map((item,index) => {
-
-        const date =
-          item.date
-            ? new Date(item.date)
-                .toLocaleString(
-                  "fa-IR"
-                )
-            : "—";
-
-
-        return `
-
-          <tr>
-
-            <td>
-              #${index + 1}
-            </td>
-
-            <td>
-              ${Number(item.amir || 0)}
-            </td>
-
-            <td>
-              ${Number(item.mehdi || 0)}
-            </td>
-
-            <td>
-              ${escapeHtml(date)}
-            </td>
-
-            <td>
-
-              <button
-                class="icon-btn delete"
-                data-delete-score="${item.id}"
-              >
-                🗑️ حذف
-              </button>
-
-            </td>
-
-          </tr>
-
-        `;
-
-      }).join("");
-
-
-    $$("[data-delete-score]")
-      .forEach(button => {
-
-        button.onclick =
-          async () => {
-
-            if(
-              !confirm(
-                "این نتیجه حذف شود؟"
-              )
-            ){
-              return;
-            }
-
-
-            try{
-
-              await deleteDoc(
-                doc(
-                  db,
-                  "scores",
-                  button.dataset.deleteScore
-                )
-              );
-
-              toast(
-                "نتیجه حذف شد 🗑️"
-              );
-
-              loadScores();
-
-            }catch(error){
-
-              console.error(error);
-
-              toast(
-                "حذف نتیجه انجام نشد."
-              );
-
-            }
-
-          };
-
-      });
-
-  }catch(error){
-
-    console.error(error);
-
-    table.innerHTML =
-      `<tr>
-        <td colspan="5">
-          ❌ دریافت امتیازات ناموفق بود.
-        </td>
-      </tr>`;
-
-  }
-
-}
-
-
-/* ==========================================================
-   POLL
-========================================================== */
-
-async function loadPoll(){
-
-  try{
-
-    const snapshot =
-      await getDoc(
-        doc(db,"polls","main")
-      );
-
-
-    const data =
-      snapshot.exists()
-        ? snapshot.data()
-        : {
-            دقت:0,
-            قدرت:0
-          };
-
-
-    const accuracy =
-      Number(data["دقت"] || 0);
-
-    const power =
-      Number(data["قدرت"] || 0);
-
-    const total =
-      accuracy + power;
-
-
-    $("#pollAccuracy")
-      .textContent =
-      accuracy;
-
-    $("#pollPower")
-      .textContent =
-      power;
-
-
-    $("#statVotes")
-      .textContent =
-      total;
-
-
-    const accuracyPercent =
-      total
-        ? accuracy / total * 100
-        : 0;
-
-    const powerPercent =
-      total
-        ? power / total * 100
-        : 0;
-
-
-    $("#accuracyBar")
-      .style.width =
-      `${accuracyPercent}%`;
-
-    $("#powerBar")
-      .style.width =
-      `${powerPercent}%`;
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-}
-
-
-$("#resetPoll").onclick =
-  async () => {
-
-    if(
-      !confirm(
-        "همه رأی‌های نظرسنجی صفر شوند؟"
-      )
-    ){
-      return;
+    if (!response.ok) {
+      throw new Error("حذف خبر ناموفق بود.");
     }
 
-
-    try{
-
-      await setDoc(
-        doc(db,"polls","main"),
-        {
-          دقت:0,
-          قدرت:0
-        }
-      );
-
-      toast(
-        "نظرسنجی صفر شد 📊"
-      );
-
-      loadPoll();
-
-    }catch(error){
-
-      console.error(error);
-
-      toast(
-        "صفر کردن نظرسنجی انجام نشد."
-      );
-
-    }
-
-  };
-
-
-/* ==========================================================
-   DERBY
-========================================================== */
-
-async function loadDerby(){
-
-  try{
-
-    const snapshot =
-      await getDoc(
-        doc(db,"derby","main")
-      );
-
-
-    const data =
-      snapshot.exists()
-        ? snapshot.data()
-        : {
-            amir:0,
-            mehdi:0
-          };
-
-
-    const amir =
-      Number(data.amir || 0);
-
-    const mehdi =
-      Number(data.mehdi || 0);
-
-
-    $("#derbyAmirAdmin")
-      .textContent =
-      amir;
-
-    $("#derbyMehdiAdmin")
-      .textContent =
-      mehdi;
-
-
-    $("#adminDerbyAmir")
-      .value =
-      amir;
-
-    $("#adminDerbyMehdi")
-      .value =
-      mehdi;
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-}
-
-
-$("#saveDerby").onclick =
-  async () => {
-
-    const amir =
-      Math.max(
-        0,
-        Number(
-          $("#adminDerbyAmir")
-            .value
-        ) || 0
-      );
-
-    const mehdi =
-      Math.max(
-        0,
-        Number(
-          $("#adminDerbyMehdi")
-            .value
-        ) || 0
-      );
-
-
-    try{
-
-      await setDoc(
-        doc(db,"derby","main"),
-        {
-          amir,
-          mehdi
-        }
-      );
-
-      toast(
-        "امتیاز دربی ذخیره شد 🔥"
-      );
-
-      loadDerby();
-
-    }catch(error){
-
-      console.error(error);
-
-      toast(
-        "ذخیره امتیاز انجام نشد."
-      );
-
-    }
-
-  };
-
-
-$("#resetDerby").onclick =
-  async () => {
-
-    if(
-      !confirm(
-        "امتیاز دربی صفر شود؟"
-      )
-    ){
-      return;
-    }
-
-
-    try{
-
-      await setDoc(
-        doc(db,"derby","main"),
-        {
-          amir:0,
-          mehdi:0
-        }
-      );
-
-      toast(
-        "امتیاز دربی صفر شد."
-      );
-
-      loadDerby();
-
-    }catch(error){
-
-      console.error(error);
-
-      toast(
-        "عملیات انجام نشد."
-      );
-
-    }
-
-  };
-
-
-/* ==========================================================
-   REFRESH ALL
-========================================================== */
-
-async function refreshAll(){
-
-  await Promise.all([
-    loadNews(),
-    loadMatches(),
-    loadScores(),
-    loadPoll(),
-    loadDerby()
-  ]);
-
-}
-
-
-$("#refreshAll").onclick =
-  async () => {
-
-    toast(
-      "در حال بروزرسانی... 🔄"
+    setStatus(
+      "✅ خبر حذف شد.",
+      "ok"
     );
 
-    await refreshAll();
+    await loadNews();
 
-    toast(
-      "همه اطلاعات بروزرسانی شد ✅"
+  } catch (error) {
+
+    setStatus(
+      "❌ حذف انجام نشد: " + error.message,
+      "error"
     );
+  }
+}
 
-  };
+document.getElementById("refresh")
+  .addEventListener("click", loadNews);
 
-
-/* ==========================================================
-   START
-========================================================== */
-
-refreshAll();
-
+loadNews();
 </script>
 
 </body>
-  </html>
+</html>
