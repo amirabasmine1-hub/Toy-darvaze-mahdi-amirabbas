@@ -4,641 +4,584 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <meta name="theme-color" content="#1597e5">
   <title>پنل مدیریت | توی دروازه</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  >
 
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root{
+      --blue:#1597e5;
+      --blue2:#62c8f7;
+      --sky:#eaf8ff;
+      --white:#fff;
+      --ink:#17324d;
+      --muted:#648097;
+      --line:#d9eef9;
+      --green:#24b47e;
+      --red:#e85c78;
+      --yellow:#f5ad32;
+      --shadow:0 18px 50px rgba(21,151,229,.12);
+      --radius:22px;
     }
 
-    :root {
-      --blue: #1677ff;
-      --blue2: #075bd3;
-      --sky: #eaf5ff;
-      --white: #ffffff;
-      --text: #10233f;
-      --muted: #718096;
-      --border: #dcecff;
-      --success: #19a463;
-      --danger: #e5484d;
-      --warning: #ed9b18;
-      --shadow: 0 15px 45px rgba(38, 112, 190, .12);
-      --radius: 22px;
+    *{
+      box-sizing:border-box;
     }
 
-    body {
-      font-family: "Vazirmatn", sans-serif;
-      background:
-        radial-gradient(circle at 90% 0%, #dff2ff 0, transparent 30%),
-        linear-gradient(135deg, #f5fbff, #eef7ff);
-      color: var(--text);
-      min-height: 100vh;
+    html{
+      scroll-behavior:smooth;
+    }
+
+    body{
+      margin:0;
+      font-family:Vazirmatn,Tahoma,sans-serif;
+      color:var(--ink);
+      background:#f5fbff;
+      line-height:1.8;
     }
 
     button,
     input,
     textarea,
-    select {
-      font-family: inherit;
+    select{
+      font:inherit;
     }
 
-    button {
-      cursor: pointer;
-      border: 0;
+    button{
+      cursor:pointer;
     }
 
-    .layout {
-      display: flex;
-      min-height: 100vh;
+    .container{
+      width:min(1180px,92%);
+      margin:auto;
     }
 
-    /* SIDEBAR */
+    /* HEADER */
 
-    .sidebar {
-      width: 270px;
-      position: fixed;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      padding: 20px;
-      background: rgba(255,255,255,.92);
-      backdrop-filter: blur(18px);
-      border-left: 1px solid var(--border);
-      z-index: 1000;
-      overflow-y: auto;
+    .header{
+      background:
+        radial-gradient(circle at 90% 10%,#d9f5ff,transparent 30%),
+        linear-gradient(135deg,#ffffff,#edfaff);
+      border-bottom:1px solid var(--line);
+      padding:35px 0;
     }
 
-    .brand {
-      padding: 18px;
-      border-radius: 20px;
-      background: linear-gradient(135deg, #1677ff, #55b8ff);
-      color: white;
-      box-shadow: 0 14px 30px rgba(22,119,255,.22);
-      margin-bottom: 25px;
+    .header-inner{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
     }
 
-    .brand small {
-      opacity: .85;
-      display: block;
-      margin-bottom: 4px;
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
     }
 
-    .brand h1 {
-      font-size: 22px;
-      font-weight: 900;
+    .brand-icon{
+      width:65px;
+      height:65px;
+      border-radius:20px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(145deg,#48bdf0,#128bd3);
+      color:white;
+      font-size:32px;
+      box-shadow:0 15px 35px rgba(21,151,229,.2);
     }
 
-    .brand span {
-      display: block;
-      margin-top: 5px;
-      font-size: 12px;
-      opacity: .85;
+    .brand h1{
+      margin:0;
+      font-size:25px;
     }
 
-    .menu-title {
-      font-size: 11px;
-      color: #9aa9bb;
-      font-weight: 800;
-      margin: 20px 10px 8px;
+    .brand p{
+      margin:2px 0 0;
+      color:var(--muted);
+      font-size:12px;
     }
 
-    .menu {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
+    .status{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 13px;
+      border-radius:30px;
+      background:white;
+      border:1px solid var(--line);
+      font-size:12px;
+      font-weight:800;
     }
 
-    .menu button {
-      width: 100%;
-      padding: 13px 14px;
-      border-radius: 14px;
-      background: transparent;
-      color: #53657a;
-      text-align: right;
-      font-weight: 700;
-      transition: .2s;
-      display: flex;
-      align-items: center;
-      gap: 11px;
+    .status-dot{
+      width:9px;
+      height:9px;
+      border-radius:50%;
+      background:var(--yellow);
     }
 
-    .menu button:hover {
-      background: #eef7ff;
-      color: var(--blue);
-      transform: translateX(-3px);
+    .status.online .status-dot{
+      background:var(--green);
+      box-shadow:0 0 0 5px rgba(36,180,126,.1);
     }
 
-    .menu button.active {
-      background: linear-gradient(135deg, #e3f2ff, #f3faff);
-      color: var(--blue);
-      box-shadow: inset 3px 0 0 var(--blue);
+    .status.offline .status-dot{
+      background:var(--red);
     }
 
-    .menu-icon {
-      width: 31px;
-      height: 31px;
-      display: grid;
-      place-items: center;
-      background: #f1f7fc;
-      border-radius: 10px;
-      font-size: 16px;
+    /* NAV */
+
+    .nav{
+      margin-top:25px;
+      display:flex;
+      gap:8px;
+      overflow:auto;
+      padding-bottom:3px;
+    }
+
+    .nav button{
+      border:1px solid var(--line);
+      background:white;
+      color:#56758b;
+      border-radius:14px;
+      padding:10px 15px;
+      font-weight:800;
+      white-space:nowrap;
+      transition:.2s;
+    }
+
+    .nav button:hover,
+    .nav button.active{
+      background:var(--blue);
+      color:white;
+      border-color:var(--blue);
+      transform:translateY(-2px);
     }
 
     /* MAIN */
 
-    .main {
-      width: calc(100% - 270px);
-      margin-right: 270px;
-      padding: 25px;
+    main{
+      padding:40px 0 80px;
     }
 
-    .topbar {
-      min-height: 75px;
-      background: rgba(255,255,255,.86);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 15px 20px;
-      box-shadow: var(--shadow);
-      margin-bottom: 25px;
-      backdrop-filter: blur(15px);
+    .section{
+      display:none;
     }
 
-    .top-title h2 {
-      font-size: 23px;
-      font-weight: 900;
+    .section.active{
+      display:block;
+      animation:fadeIn .3s ease;
     }
 
-    .top-title p {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 3px;
-    }
-
-    .admin-badge {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: #f0f8ff;
-      padding: 9px 14px;
-      border-radius: 14px;
-      color: var(--blue);
-      font-weight: 800;
-      font-size: 13px;
-    }
-
-    .admin-dot {
-      width: 9px;
-      height: 9px;
-      background: #20c77a;
-      border-radius: 50%;
-      box-shadow: 0 0 0 5px #dff9ed;
-    }
-
-    /* SECTIONS */
-
-    .page {
-      display: none;
-      animation: pageIn .3s ease;
-    }
-
-    .page.active {
-      display: block;
-    }
-
-    @keyframes pageIn {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
+    @keyframes fadeIn{
+      from{
+        opacity:0;
+        transform:translateY(8px);
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      to{
+        opacity:1;
+        transform:none;
       }
     }
 
-    .page-heading {
-      margin-bottom: 20px;
+    .section-title{
+      margin-bottom:25px;
     }
 
-    .page-heading h2 {
-      font-size: 27px;
-      font-weight: 900;
+    .section-title h2{
+      margin:0 0 5px;
+      font-size:30px;
     }
 
-    .page-heading p {
-      color: var(--muted);
-      margin-top: 5px;
-      font-size: 13px;
+    .section-title p{
+      margin:0;
+      color:var(--muted);
+      font-size:13px;
     }
 
-    /* STATS */
+    /* DASHBOARD */
 
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 22px;
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:25px;
     }
 
-    .stat {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
+    .stat{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:23px;
+      box-shadow:0 10px 30px rgba(42,128,170,.06);
     }
 
-    .stat::after {
-      content: "";
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      background: #eaf6ff;
-      border-radius: 50%;
-      left: -25px;
-      bottom: -30px;
+    .stat-icon{
+      font-size:27px;
     }
 
-    .stat-icon {
-      font-size: 25px;
-      margin-bottom: 14px;
+    .stat b{
+      display:block;
+      font-size:32px;
+      color:var(--blue);
+      margin-top:8px;
     }
 
-    .stat-number {
-      font-size: 29px;
-      font-weight: 900;
+    .stat span{
+      color:var(--muted);
+      font-size:12px;
     }
 
-    .stat-label {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: 3px;
+    .dashboard-grid{
+      display:grid;
+      grid-template-columns:1.3fr .7fr;
+      gap:20px;
     }
 
-    /* CARDS */
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
+    .panel{
+      background:white;
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:25px;
+      box-shadow:0 10px 30px rgba(42,128,170,.06);
     }
 
-    .card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
+    .panel h3{
+      margin-top:0;
     }
 
-    .card-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 17px;
+    .quick-actions{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
     }
 
-    .card-title h3 {
-      font-size: 16px;
-      font-weight: 900;
+    /* FORM */
+
+    .form-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:15px;
     }
 
-    .card-title span {
-      font-size: 12px;
-      color: var(--muted);
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+
+    .field.full{
+      grid-column:1/-1;
+    }
+
+    .field label{
+      font-size:12px;
+      font-weight:800;
+    }
+
+    input,
+    textarea,
+    select{
+      width:100%;
+      border:1px solid var(--line);
+      background:#fbfeff;
+      color:var(--ink);
+      border-radius:13px;
+      padding:11px 13px;
+      outline:none;
+    }
+
+    textarea{
+      min-height:120px;
+      resize:vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus{
+      border-color:var(--blue);
+      box-shadow:0 0 0 4px rgba(21,151,229,.08);
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap:9px;
+      margin-top:18px;
+    }
+
+    .btn{
+      border:0;
+      border-radius:13px;
+      padding:10px 16px;
+      font-weight:800;
+      transition:.2s;
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .primary{
+      background:var(--blue);
+      color:white;
+    }
+
+    .secondary{
+      background:var(--sky);
+      color:var(--blue);
+    }
+
+    .danger{
+      background:#fff0f3;
+      color:#d94767;
+    }
+
+    .success{
+      background:#e9fbf4;
+      color:#16835c;
+    }
+
+    /* LIST */
+
+    .list{
+      margin-top:20px;
+      display:grid;
+      gap:12px;
+    }
+
+    .item{
+      border:1px solid var(--line);
+      border-radius:17px;
+      padding:17px;
+      background:#fcfeff;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+    }
+
+    .item-main{
+      min-width:0;
+    }
+
+    .item-title{
+      font-weight:900;
+      margin-bottom:2px;
+    }
+
+    .item-meta{
+      color:var(--muted);
+      font-size:11px;
+    }
+
+    .item-text{
+      color:#56758b;
+      font-size:12px;
+      margin-top:5px;
+      white-space:pre-wrap;
+    }
+
+    .item-actions{
+      display:flex;
+      gap:6px;
+      flex-shrink:0;
+    }
+
+    .icon-btn{
+      border:0;
+      border-radius:11px;
+      padding:8px 10px;
+      background:var(--sky);
+      color:var(--blue);
+      font-weight:800;
+    }
+
+    .icon-btn.delete{
+      background:#fff0f3;
+      color:#d94767;
+    }
+
+    .empty{
+      text-align:center;
+      padding:35px 15px;
+      border:1px dashed #b8ddec;
+      border-radius:17px;
+      color:var(--muted);
     }
 
     /* TABLE */
 
-    .table-wrap {
-      overflow-x: auto;
+    .table-wrap{
+      overflow:auto;
+      margin-top:20px;
+      border:1px solid var(--line);
+      border-radius:17px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 650px;
+    table{
+      width:100%;
+      border-collapse:collapse;
+      min-width:650px;
+      background:white;
     }
 
-    th {
-      background: #f2f8fd;
-      color: #607389;
-      font-size: 12px;
-      text-align: right;
-      padding: 13px;
+    th,
+    td{
+      padding:12px;
+      border-bottom:1px solid #eaf4f9;
+      text-align:center;
+      font-size:12px;
     }
 
-    td {
-      padding: 14px 13px;
-      border-bottom: 1px solid #edf3f8;
-      font-size: 13px;
+    th{
+      color:var(--muted);
+      background:#f7fcff;
     }
 
-    tr:last-child td {
-      border-bottom: 0;
+    /* POLL */
+
+    .poll-box{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
     }
 
-    /* BUTTONS */
-
-    .btn {
-      padding: 10px 15px;
-      border-radius: 12px;
-      font-weight: 800;
-      transition: .2s;
+    .poll-option{
+      padding:25px;
+      border:1px solid var(--line);
+      border-radius:20px;
+      background:#fbfeff;
+      text-align:center;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
+    .poll-number{
+      display:block;
+      font-size:38px;
+      font-weight:900;
+      color:var(--blue);
     }
 
-    .btn-primary {
-      color: white;
-      background: linear-gradient(135deg, var(--blue), #42aaff);
-      box-shadow: 0 8px 20px rgba(22,119,255,.2);
+    .poll-name{
+      color:var(--muted);
+      font-size:13px;
     }
 
-    .btn-light {
-      background: #eef7ff;
-      color: var(--blue);
+    .bar{
+      height:9px;
+      background:#e9f5fa;
+      border-radius:20px;
+      overflow:hidden;
+      margin-top:15px;
     }
 
-    .btn-danger {
-      background: #fff0f1;
-      color: var(--danger);
+    .bar i{
+      display:block;
+      height:100%;
+      width:0;
+      background:linear-gradient(90deg,var(--blue),var(--blue2));
+      border-radius:20px;
+      transition:.4s;
     }
 
-    .btn-success {
-      background: #e9fbf2;
-      color: var(--success);
-    }
+    /* INFO */
 
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    /* FORMS */
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .field.full {
-      grid-column: 1 / -1;
-    }
-
-    .field label {
-      font-size: 12px;
-      font-weight: 800;
-      color: #50657c;
-    }
-
-    .field input,
-    .field textarea,
-    .field select {
-      border: 1px solid #dceaf5;
-      background: #fbfdff;
-      border-radius: 13px;
-      padding: 12px;
-      outline: none;
-      color: var(--text);
-      transition: .2s;
-    }
-
-    .field textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      border-color: var(--blue);
-      box-shadow: 0 0 0 4px rgba(22,119,255,.08);
-    }
-
-    /* QUICK ACTIONS */
-
-    .quick-actions {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 13px;
-    }
-
-    .quick {
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      padding: 18px;
-      background: #fbfdff;
-      cursor: pointer;
-      transition: .2s;
-    }
-
-    .quick:hover {
-      transform: translateY(-3px);
-      background: #f1f8ff;
-      border-color: #b8dcff;
-    }
-
-    .quick b {
-      display: block;
-      margin-top: 8px;
-      font-size: 14px;
-    }
-
-    .quick span {
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    /* BADGES */
-
-    .badge {
-      display: inline-flex;
-      padding: 5px 9px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 800;
-    }
-
-    .badge-blue {
-      color: #176fd9;
-      background: #e7f3ff;
-    }
-
-    .badge-green {
-      color: #128451;
-      background: #e6faef;
-    }
-
-    .badge-yellow {
-      color: #a36b00;
-      background: #fff5d9;
-    }
-
-    .badge-red {
-      color: #bd3e44;
-      background: #ffeaec;
-    }
-
-    /* FOOTBALL */
-
-    .match {
-      padding: 15px;
-      border: 1px solid #e5eff7;
-      border-radius: 16px;
-      margin-bottom: 10px;
-      background: #fbfdff;
-    }
-
-    .match-top {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 10px;
-    }
-
-    .match-teams {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-weight: 900;
-    }
-
-    .match-score {
-      font-size: 20px;
-      color: var(--blue);
+    .notice{
+      padding:15px 18px;
+      background:var(--sky);
+      border:1px solid var(--line);
+      border-radius:15px;
+      color:#477087;
+      font-size:12px;
+      margin-bottom:20px;
     }
 
     /* TOAST */
 
-    .toast {
-      position: fixed;
-      left: 25px;
-      bottom: 25px;
-      background: #10233f;
-      color: white;
-      padding: 14px 18px;
-      border-radius: 15px;
-      box-shadow: 0 15px 40px rgba(0,0,0,.2);
-      transform: translateY(120px);
-      opacity: 0;
-      transition: .3s;
-      z-index: 5000;
-      font-size: 13px;
-      font-weight: 700;
+    .toast{
+      position:fixed;
+      bottom:25px;
+      left:50%;
+      transform:translate(-50%,20px);
+      opacity:0;
+      pointer-events:none;
+      background:#17324d;
+      color:white;
+      padding:11px 17px;
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      z-index:1000;
+      font-size:12px;
+      font-weight:800;
+      transition:.25s;
     }
 
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
+    .toast.show{
+      opacity:1;
+      transform:translate(-50%,0);
     }
 
-    /* MOBILE */
+    /* FOOTER */
 
-    .mobile-menu {
-      display: none;
-      background: #eef7ff;
-      color: var(--blue);
-      border-radius: 12px;
-      width: 44px;
-      height: 44px;
-      font-size: 21px;
+    footer{
+      text-align:center;
+      padding:25px;
+      color:var(--muted);
+      font-size:11px;
     }
 
-    @media (max-width: 1050px) {
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
+    /* RESPONSIVE */
+
+    @media(max-width:900px){
+      .stats{
+        grid-template-columns:repeat(2,1fr);
       }
 
-      .grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 800px) {
-      .sidebar {
-        transform: translateX(110%);
-        transition: .3s;
-        box-shadow: -15px 0 40px rgba(0,0,0,.1);
-      }
-
-      .sidebar.open {
-        transform: translateX(0);
-      }
-
-      .main {
-        width: 100%;
-        margin-right: 0;
-        padding: 13px;
-      }
-
-      .mobile-menu {
-        display: block;
-      }
-
-      .topbar {
-        padding: 12px;
-      }
-
-      .top-title h2 {
-        font-size: 18px;
-      }
-
-      .admin-badge {
-        display: none;
-      }
-
-      .form-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .field.full {
-        grid-column: auto;
-      }
-
-      .quick-actions {
-        grid-template-columns: 1fr 1fr;
+      .dashboard-grid{
+        grid-template-columns:1fr;
       }
     }
 
-    @media (max-width: 500px) {
-      .stats {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
+    @media(max-width:650px){
+      .header-inner{
+        align-items:flex-start;
+        flex-direction:column;
       }
 
-      .stat {
-        padding: 14px;
+      .stats{
+        grid-template-columns:1fr 1fr;
       }
 
-      .stat-number {
-        font-size: 23px;
+      .form-grid{
+        grid-template-columns:1fr;
       }
 
-      .quick-actions {
-        grid-template-columns: 1fr;
+      .field.full{
+        grid-column:auto;
+      }
+
+      .poll-box{
+        grid-template-columns:1fr;
+      }
+
+      .item{
+        align-items:flex-start;
+        flex-direction:column;
+      }
+
+      .item-actions{
+        width:100%;
+      }
+
+      .item-actions button{
+        flex:1;
       }
     }
   </style>
@@ -646,1807 +589,1808 @@
 
 <body>
 
-<div class="layout">
+<header class="header">
+  <div class="container">
 
-  <!-- SIDEBAR -->
+    <div class="header-inner">
 
-  <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-icon">⚽</div>
 
-    <div class="brand">
-      <small>ADMIN PANEL</small>
-      <h1>توی دروازه ⚽</h1>
-      <span>مدیریت امیرعباس و مهدی</span>
+        <div>
+          <h1>پنل مدیریت «توی دروازه»</h1>
+          <p>مدیریت اخبار، مسابقات، امتیازات و نظرسنجی</p>
+        </div>
+      </div>
+
+      <div class="status" id="firebaseStatus">
+        <i class="status-dot"></i>
+        <span>در حال اتصال...</span>
+      </div>
+
     </div>
 
-    <div class="menu-title">مدیریت اصلی</div>
-
-    <nav class="menu">
-
-      <button class="active" data-page="dashboard">
-        <span class="menu-icon">📊</span>
-        داشبورد
+    <nav class="nav">
+      <button class="active" data-section="dashboard">
+        📊 داشبورد
       </button>
 
-      <button data-page="news">
-        <span class="menu-icon">📰</span>
-        اخبار
+      <button data-section="news">
+        📰 اخبار
       </button>
 
-      <button data-page="matches">
-        <span class="menu-icon">⚽</span>
-        بازی‌های فوتبال
+      <button data-section="matches">
+        ⚽ بازی‌ها
       </button>
 
-      <button data-page="game">
-        <span class="menu-icon">🏆</span>
-        بازی توی دروازه
+      <button data-section="scores">
+        🏆 امتیازات
       </button>
 
-      <button data-page="scores">
-        <span class="menu-icon">📈</span>
-        امتیازها
+      <button data-section="poll">
+        📊 نظرسنجی
       </button>
 
-      <button data-page="poll">
-        <span class="menu-icon">🗳️</span>
-        نظرسنجی
+      <button data-section="derby">
+        🔥 دربی
       </button>
-
-      <button data-page="gallery">
-        <span class="menu-icon">🖼️</span>
-        گالری
-      </button>
-
     </nav>
 
-    <div class="menu-title">سایت</div>
-
-    <nav class="menu">
-
-      <button data-page="statistics">
-        <span class="menu-icon">📡</span>
-        آمار سایت
-      </button>
-
-      <button data-page="settings">
-        <span class="menu-icon">⚙️</span>
-        تنظیمات
-      </button>
-
-    </nav>
-
-  </aside>
+  </div>
+</header>
 
 
-  <!-- MAIN -->
-
-  <main class="main">
-
-    <header class="topbar">
-
-      <button class="mobile-menu" id="mobileMenu">
-        ☰
-      </button>
-
-      <div class="top-title">
-        <h2 id="pageTitle">داشبورد</h2>
-        <p>مرکز کنترل سایت «توی دروازه»</p>
-      </div>
-
-      <div class="admin-badge">
-        <span class="admin-dot"></span>
-        حالت مدیریت فعال
-      </div>
-
-    </header>
+<main>
+<div class="container">
 
 
-    <!-- DASHBOARD -->
+<!-- ======================================================
+     DASHBOARD
+====================================================== -->
 
-    <section class="page active" id="dashboard">
+<section class="section active" id="section-dashboard">
 
-      <div class="page-heading">
-        <h2>سلام مدیر 👋</h2>
-        <p>اینجا همه چیز سایت را کنترل می‌کنی.</p>
-      </div>
+  <div class="section-title">
+    <h2>📊 داشبورد</h2>
+    <p>وضعیت فعلی اطلاعات سایت</p>
+  </div>
 
-      <div class="stats">
+  <div class="stats">
 
-        <div class="stat">
-          <div class="stat-icon">📰</div>
-          <div class="stat-number" id="statNews">0</div>
-          <div class="stat-label">اخبار</div>
-        </div>
+    <div class="stat">
+      <div class="stat-icon">📰</div>
+      <b id="statNews">—</b>
+      <span>خبر ثبت‌شده</span>
+    </div>
 
-        <div class="stat">
-          <div class="stat-icon">⚽</div>
-          <div class="stat-number" id="statMatches">0</div>
-          <div class="stat-label">بازی فوتبال</div>
-        </div>
+    <div class="stat">
+      <div class="stat-icon">⚽</div>
+      <b id="statMatches">—</b>
+      <span>بازی ثبت‌شده</span>
+    </div>
 
-        <div class="stat">
-          <div class="stat-icon">🏆</div>
-          <div class="stat-number" id="statGames">0</div>
-          <div class="stat-label">بازی‌های توی دروازه</div>
-        </div>
+    <div class="stat">
+      <div class="stat-icon">🏆</div>
+      <b id="statScores">—</b>
+      <span>نتیجه ثبت‌شده</span>
+    </div>
 
-        <div class="stat">
-          <div class="stat-icon">👥</div>
-          <div class="stat-number" id="statVotes">0</div>
-          <div class="stat-label">رأی‌های نظرسنجی</div>
-        </div>
+    <div class="stat">
+      <div class="stat-icon">📊</div>
+      <b id="statVotes">—</b>
+      <span>رأی نظرسنجی</span>
+    </div>
 
-      </div>
-
-
-      <div class="grid">
-
-        <div class="card">
-
-          <div class="card-title">
-            <h3>دسترسی سریع ⚡</h3>
-            <span>مدیریت سریع</span>
-          </div>
-
-          <div class="quick-actions">
-
-            <div class="quick" onclick="openPage('news')">
-              <div>📰</div>
-              <b>خبر جدید</b>
-              <span>افزودن خبر</span>
-            </div>
-
-            <div class="quick" onclick="openPage('matches')">
-              <div>⚽</div>
-              <b>بازی جدید</b>
-              <span>افزودن مسابقه</span>
-            </div>
-
-            <div class="quick" onclick="openPage('game')">
-              <div>🏆</div>
-              <b>نتیجه جدید</b>
-              <span>ثبت نتیجه</span>
-            </div>
-
-            <div class="quick" onclick="openPage('poll')">
-              <div>🗳️</div>
-              <b>نظرسنجی</b>
-              <span>مدیریت رأی‌گیری</span>
-            </div>
-
-            <div class="quick" onclick="openPage('gallery')">
-              <div>🖼️</div>
-              <b>گالری</b>
-              <span>مدیریت تصاویر</span>
-            </div>
-
-            <div class="quick" onclick="openPage('statistics')">
-              <div>📈</div>
-              <b>آمار</b>
-              <span>مشاهده وضعیت</span>
-            </div>
-
-          </div>
-
-        </div>
+  </div>
 
 
-        <div class="card">
+  <div class="dashboard-grid">
 
-          <div class="card-title">
-            <h3>وضعیت سیستم 🟢</h3>
-          </div>
+    <div class="panel">
 
-          <div class="match">
+      <h3>⚡ دسترسی سریع</h3>
 
-            <div class="match-top">
-              <span>Firebase</span>
-              <span class="badge badge-yellow" id="firebaseStatus">
-                در انتظار اتصال
-              </span>
-            </div>
+      <div class="quick-actions">
 
-            <div class="match-teams">
-              <span>Cloud Firestore</span>
-              <span>🗄️</span>
-            </div>
-
-          </div>
-
-          <div class="match">
-
-            <div class="match-top">
-              <span>پنل</span>
-              <span class="badge badge-green">فعال</span>
-            </div>
-
-            <div class="match-teams">
-              <span>Admin Panel</span>
-              <span>⚡</span>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- NEWS -->
-
-    <section class="page" id="news">
-
-      <div class="page-heading">
-        <h2>مدیریت اخبار 📰</h2>
-        <p>خبرهای سایت را اضافه، ویرایش و حذف کن.</p>
-      </div>
-
-      <div class="card">
-
-        <div class="card-title">
-          <h3>افزودن خبر</h3>
-        </div>
-
-        <div class="form-grid">
-
-          <div class="field">
-            <label>عنوان خبر</label>
-            <input id="newsTitle" placeholder="مثلاً مسابقه امروز برگزار شد">
-          </div>
-
-          <div class="field">
-            <label>دسته‌بندی</label>
-            <select id="newsCategory">
-              <option>عمومی</option>
-              <option>توی دروازه</option>
-              <option>فوتبال</option>
-              <option>مدرسه</option>
-              <option>سایت</option>
-            </select>
-          </div>
-
-          <div class="field full">
-            <label>متن خبر</label>
-            <textarea id="newsContent" placeholder="متن خبر را بنویس..."></textarea>
-          </div>
-
-        </div>
-
-        <br>
-
-        <button class="btn btn-primary" onclick="addNews()">
-          ➕ افزودن خبر
+        <button class="btn primary" data-go="news">
+          📰 افزودن خبر
         </button>
 
-      </div>
-
-      <br>
-
-      <div class="card">
-
-        <div class="card-title">
-          <h3>اخبار موجود</h3>
-          <span id="newsCount">0 خبر</span>
-        </div>
-
-        <div class="table-wrap">
-
-          <table>
-
-            <thead>
-              <tr>
-                <th>عنوان</th>
-                <th>دسته</th>
-                <th>وضعیت</th>
-                <th>عملیات</th>
-              </tr>
-            </thead>
-
-            <tbody id="newsTable">
-              <tr>
-                <td colspan="4">هنوز خبری ثبت نشده.</td>
-              </tr>
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- MATCHES -->
-
-    <section class="page" id="matches">
-
-      <div class="page-heading">
-        <h2>مدیریت بازی‌های فوتبال ⚽</h2>
-        <p>بازی‌های انجام‌شده، زنده و آینده را کنترل کن.</p>
-      </div>
-
-      <div class="card">
-
-        <div class="card-title">
-          <h3>افزودن بازی</h3>
-        </div>
-
-        <div class="form-grid">
-
-          <div class="field">
-            <label>تیم میزبان</label>
-            <input id="homeTeam" placeholder="استقلال">
-          </div>
-
-          <div class="field">
-            <label>تیم مهمان</label>
-            <input id="awayTeam" placeholder="پرسپولیس">
-          </div>
-
-          <div class="field">
-            <label>تاریخ</label>
-            <input id="matchDate" type="date">
-          </div>
-
-          <div class="field">
-            <label>ساعت</label>
-            <input id="matchTime" type="time">
-          </div>
-
-          <div class="field">
-            <label>نتیجه</label>
-            <input id="matchResult" placeholder="2 - 1">
-          </div>
-
-          <div class="field">
-            <label>وضعیت</label>
-            <select id="matchStatus">
-              <option value="finished">انجام شده</option>
-              <option value="live">زنده</option>
-              <option value="upcoming">آینده</option>
-            </select>
-          </div>
-
-        </div>
-
-        <br>
-
-        <button class="btn btn-primary" onclick="addMatch()">
+        <button class="btn primary" data-go="matches">
           ⚽ افزودن بازی
         </button>
 
-      </div>
+        <button class="btn secondary" data-go="scores">
+          🏆 مشاهده امتیازات
+        </button>
 
-      <br>
-
-      <div class="card">
-
-        <div class="card-title">
-          <h3>بازی‌های ثبت‌شده</h3>
-        </div>
-
-        <div id="matchesList"></div>
-
-      </div>
-
-    </section>
-
-
-    <!-- GAME -->
-
-    <section class="page" id="game">
-
-      <div class="page-heading">
-        <h2>توی دروازه 🏆</h2>
-        <p>نتایج بازی اصلی خودمان را مدیریت کن.</p>
-      </div>
-
-      <div class="card">
-
-        <div class="card-title">
-          <h3>ثبت نتیجه جدید</h3>
-        </div>
-
-        <div class="form-grid">
-
-          <div class="field">
-            <label>بازیکن اول</label>
-            <input id="playerOne" value="امیرعباس">
-          </div>
-
-          <div class="field">
-            <label>بازیکن دوم</label>
-            <input id="playerTwo" value="مهدی">
-          </div>
-
-          <div class="field">
-            <label>امتیاز بازیکن اول</label>
-            <input id="playerOneScore" type="number" value="0">
-          </div>
-
-          <div class="field">
-            <label>امتیاز بازیکن دوم</label>
-            <input id="playerTwoScore" type="number" value="0">
-          </div>
-
-          <div class="field full">
-            <label>توضیحات</label>
-            <textarea id="gameDescription" placeholder="مثلاً بازی هیجان‌انگیز امروز..."></textarea>
-          </div>
-
-        </div>
-
-        <br>
-
-        <button class="btn btn-primary" onclick="addGame()">
-          🏆 ثبت نتیجه
+        <button class="btn secondary" data-go="poll">
+          📊 مدیریت نظرسنجی
         </button>
 
       </div>
 
-      <br>
+    </div>
 
-      <div class="card">
 
-        <div class="card-title">
-          <h3>نتایج اخیر</h3>
+    <div class="panel">
+
+      <h3>🔥 وضعیت Firebase</h3>
+
+      <p id="dashboardFirebase">
+        در حال بررسی اتصال...
+      </p>
+
+      <button
+        class="btn secondary"
+        id="refreshAll"
+      >
+        🔄 بروزرسانی اطلاعات
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ======================================================
+     NEWS
+====================================================== -->
+
+<section class="section" id="section-news">
+
+  <div class="section-title">
+    <h2>📰 مدیریت اخبار</h2>
+    <p>خبر جدید منتشر کن یا خبرهای قبلی را حذف کن.</p>
+  </div>
+
+  <div class="panel">
+
+    <form id="newsForm">
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label>عنوان خبر</label>
+
+          <input
+            id="newsTitle"
+            required
+            placeholder="مثلاً: اولین خبر سایت 🎮"
+          >
         </div>
 
-        <div id="gamesList"></div>
+        <div class="field">
+          <label>تاریخ</label>
 
-      </div>
-
-    </section>
-
-
-    <!-- SCORES -->
-
-    <section class="page" id="scores">
-
-      <div class="page-heading">
-        <h2>امتیازها 📈</h2>
-        <p>جدول امتیاز بازیکنان را مدیریت کن.</p>
-      </div>
-
-      <div class="card">
-
-        <div class="card-title">
-          <h3>جدول امتیازات</h3>
+          <input
+            id="newsDate"
+            placeholder="مثلاً: ۱۴۰۵/۰۷/۰۶"
+          >
         </div>
 
-        <div class="table-wrap">
+        <div class="field full">
+          <label>متن خبر</label>
 
-          <table>
-
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>بازیکن</th>
-                <th>برد</th>
-                <th>باخت</th>
-                <th>امتیاز</th>
-                <th>عملیات</th>
-              </tr>
-            </thead>
-
-            <tbody id="scoresTable">
-
-              <tr>
-                <td>1</td>
-                <td>امیرعباس</td>
-                <td>0</td>
-                <td>0</td>
-                <td><b>0</b></td>
-                <td>
-                  <button class="btn btn-danger" onclick="removeRow(this)">
-                    حذف
-                  </button>
-                </td>
-              </tr>
-
-              <tr>
-                <td>2</td>
-                <td>مهدی</td>
-                <td>0</td>
-                <td>0</td>
-                <td><b>0</b></td>
-                <td>
-                  <button class="btn btn-danger" onclick="removeRow(this)">
-                    حذف
-                  </button>
-                </td>
-              </tr>
-
-            </tbody>
-
-          </table>
-
+          <textarea
+            id="newsText"
+            required
+            placeholder="متن خبر را بنویس..."
+          ></textarea>
         </div>
 
       </div>
 
-    </section>
+      <div class="actions">
 
+        <button
+          class="btn primary"
+          type="submit"
+        >
+          ➕ انتشار خبر
+        </button>
 
-    <!-- POLL -->
-
-    <section class="page" id="poll">
-
-      <div class="page-heading">
-        <h2>نظرسنجی 🗳️</h2>
-        <p>نسخه قدیمی نظرسنجی مرورگری حذف شده؛ اینجا نسخه دیتابیسی را مدیریت می‌کنیم.</p>
-      </div>
-
-      <div class="card">
-
-        <div class="card-title">
-          <h3>ساخت نظرسنجی</h3>
-        </div>
-
-        <div class="form-grid">
-
-          <div class="field full">
-            <label>سؤال</label>
-            <input id="pollQuestion" placeholder="مثلاً طرفدار کدام تیم هستی؟">
-          </div>
-
-          <div class="field">
-            <label>گزینه ۱</label>
-            <input id="pollOption1" placeholder="استقلال">
-          </div>
-
-          <div class="field">
-            <label>گزینه ۲</label>
-            <input id="pollOption2" placeholder="پرسپولیس">
-          </div>
-
-          <div class="field">
-            <label>گزینه ۳</label>
-            <input id="pollOption3" placeholder="تیم دیگر">
-          </div>
-
-        </div>
-
-        <br>
-
-        <button class="btn btn-primary" onclick="createPoll()">
-          🗳️ ساخت نظرسنجی
+        <button
+          class="btn secondary"
+          type="button"
+          id="clearNewsForm"
+        >
+          پاک کردن
         </button>
 
       </div>
 
-      <br>
+    </form>
 
-      <div class="card">
+  </div>
 
-        <div class="card-title">
-          <h3>نظرسنجی فعلی</h3>
+
+  <div class="panel" style="margin-top:20px">
+
+    <h3>خبرهای موجود</h3>
+
+    <div
+      class="list"
+      id="newsList"
+    >
+      <div class="empty">
+        در حال دریافت اخبار...
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ======================================================
+     MATCHES
+====================================================== -->
+
+<section class="section" id="section-matches">
+
+  <div class="section-title">
+    <h2>⚽ مدیریت بازی‌ها</h2>
+    <p>بازی‌های انجام‌شده، زنده و آینده را مدیریت کن.</p>
+  </div>
+
+
+  <div class="panel">
+
+    <form id="matchForm">
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label>تیم میزبان</label>
+
+          <input
+            id="matchHome"
+            required
+            placeholder="استقلال"
+          >
         </div>
 
-        <div id="pollPreview">
-          هنوز نظرسنجی‌ای ساخته نشده.
+        <div class="field">
+          <label>تیم مهمان</label>
+
+          <input
+            id="matchAway"
+            required
+            placeholder="سپاهان"
+          >
+        </div>
+
+        <div class="field">
+          <label>تاریخ</label>
+
+          <input
+            id="matchDate"
+            type="date"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label>ساعت</label>
+
+          <input
+            id="matchTime"
+            type="time"
+            required
+          >
+        </div>
+
+        <div class="field">
+          <label>نتیجه</label>
+
+          <input
+            id="matchResult"
+            placeholder="۲ - ۱"
+          >
+        </div>
+
+        <div class="field">
+          <label>وضعیت اولیه</label>
+
+          <select id="matchStatus">
+
+            <option value="upcoming">
+              آینده
+            </option>
+
+            <option value="live">
+              زنده
+            </option>
+
+            <option value="finished">
+              پایان‌یافته
+            </option>
+
+          </select>
+        </div>
+
+        <div class="field">
+          <label>مدت بازی به دقیقه</label>
+
+          <input
+            id="matchDuration"
+            type="number"
+            min="1"
+            value="110"
+          >
         </div>
 
       </div>
 
-    </section>
+      <div class="actions">
 
+        <button
+          class="btn primary"
+          type="submit"
+        >
+          ➕ ثبت بازی
+        </button>
 
-    <!-- GALLERY -->
-
-    <section class="page" id="gallery">
-
-      <div class="page-heading">
-        <h2>گالری 🖼️</h2>
-        <p>مدیریت تصاویر و خاطرات سایت.</p>
-      </div>
-
-      <div class="card">
-
-        <div class="card-title">
-          <h3>افزودن تصویر</h3>
-        </div>
-
-        <div class="form-grid">
-
-          <div class="field">
-            <label>عنوان تصویر</label>
-            <input id="galleryTitle" placeholder="مثلاً بازی امروز">
-          </div>
-
-          <div class="field">
-            <label>آدرس تصویر</label>
-            <input id="galleryUrl" placeholder="https://...">
-          </div>
-
-        </div>
-
-        <br>
-
-        <button class="btn btn-primary" onclick="addGallery()">
-          🖼️ افزودن
+        <button
+          class="btn secondary"
+          type="button"
+          id="clearMatchForm"
+        >
+          پاک کردن
         </button>
 
       </div>
 
-      <br>
+    </form>
 
-      <div class="card">
+  </div>
 
-        <div class="card-title">
-          <h3>تصاویر</h3>
-        </div>
 
-        <div id="galleryList"></div>
+  <div class="panel" style="margin-top:20px">
+
+    <h3>بازی‌های ثبت‌شده</h3>
+
+    <div
+      class="list"
+      id="matchesList"
+    >
+      <div class="empty">
+        در حال دریافت بازی‌ها...
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ======================================================
+     SCORES
+====================================================== -->
+
+<section class="section" id="section-scores">
+
+  <div class="section-title">
+    <h2>🏆 مدیریت امتیازات</h2>
+    <p>نتایج مسابقات «توی دروازه»</p>
+  </div>
+
+  <div class="panel">
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+            <th>#</th>
+            <th>امیرعباس</th>
+            <th>مهدی</th>
+            <th>تاریخ</th>
+            <th>عملیات</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="scoresTable">
+
+          <tr>
+            <td colspan="5">
+              در حال دریافت...
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ======================================================
+     POLL
+====================================================== -->
+
+<section class="section" id="section-poll">
+
+  <div class="section-title">
+    <h2>📊 نظرسنجی</h2>
+    <p>نتایج نظرسنجی سایت را مشاهده و مدیریت کن.</p>
+  </div>
+
+  <div class="poll-box">
+
+    <div class="poll-option">
+
+      <span
+        class="poll-number"
+        id="pollAccuracy"
+      >
+        0
+      </span>
+
+      <span class="poll-name">
+        🎯 دقت
+      </span>
+
+      <div class="bar">
+        <i id="accuracyBar"></i>
+      </div>
+
+    </div>
+
+
+    <div class="poll-option">
+
+      <span
+        class="poll-number"
+        id="pollPower"
+      >
+        0
+      </span>
+
+      <span class="poll-name">
+        💨 قدرت
+      </span>
+
+      <div class="bar">
+        <i id="powerBar"></i>
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="panel" style="margin-top:20px">
+
+    <h3>⚙️ کنترل نظرسنجی</h3>
+
+    <div class="notice">
+      پاک کردن نتایج، رأی‌های ثبت‌شده را از دیتابیس حذف می‌کند.
+    </div>
+
+    <button
+      class="btn danger"
+      id="resetPoll"
+    >
+      🗑️ صفر کردن نتایج نظرسنجی
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- ======================================================
+     DERBY
+====================================================== -->
+
+<section class="section" id="section-derby">
+
+  <div class="section-title">
+    <h2>🔥 دربی دوستانه</h2>
+    <p>امتیاز رقابت دوستانه امیرعباس و مهدی</p>
+  </div>
+
+  <div class="poll-box">
+
+    <div class="poll-option">
+
+      <span
+        class="poll-number"
+        id="derbyAmirAdmin"
+      >
+        0
+      </span>
+
+      <span class="poll-name">
+        🔵 امیرعباس
+      </span>
+
+    </div>
+
+
+    <div class="poll-option">
+
+      <span
+        class="poll-number"
+        id="derbyMehdiAdmin"
+      >
+        0
+      </span>
+
+      <span class="poll-name">
+        🔴 مهدی
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="panel" style="margin-top:20px">
+
+    <h3>ویرایش مستقیم امتیاز</h3>
+
+    <div class="form-grid">
+
+      <div class="field">
+
+        <label>
+          امتیاز امیرعباس
+        </label>
+
+        <input
+          type="number"
+          id="adminDerbyAmir"
+          min="0"
+          value="0"
+        >
 
       </div>
 
-    </section>
 
+      <div class="field">
 
-    <!-- STATISTICS -->
+        <label>
+          امتیاز مهدی
+        </label>
 
-    <section class="page" id="statistics">
-
-      <div class="page-heading">
-        <h2>آمار سایت 📡</h2>
-        <p>وضعیت کلی پروژه.</p>
-      </div>
-
-      <div class="stats">
-
-        <div class="stat">
-          <div class="stat-icon">👀</div>
-          <div class="stat-number" id="viewsStat">0</div>
-          <div class="stat-label">بازدید</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-icon">🗳️</div>
-          <div class="stat-number" id="votesStat">0</div>
-          <div class="stat-label">رأی</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-icon">📰</div>
-          <div class="stat-number" id="newsStat">0</div>
-          <div class="stat-label">خبر</div>
-        </div>
-
-        <div class="stat">
-          <div class="stat-icon">⚽</div>
-          <div class="stat-number" id="footballStat">0</div>
-          <div class="stat-label">مسابقه</div>
-        </div>
+        <input
+          type="number"
+          id="adminDerbyMehdi"
+          min="0"
+          value="0"
+        >
 
       </div>
 
-      <div class="card">
+    </div>
 
-        <div class="card-title">
-          <h3>وضعیت اتصال</h3>
-        </div>
+    <div class="actions">
 
-        <p id="connectionText">
-          Firebase هنوز در این نسخه به عملیات دیتابیس متصل نشده است.
-        </p>
+      <button
+        class="btn primary"
+        id="saveDerby"
+      >
+        💾 ذخیره امتیاز
+      </button>
 
-      </div>
+      <button
+        class="btn danger"
+        id="resetDerby"
+      >
+        🗑️ صفر کردن
+      </button>
 
-    </section>
+    </div>
 
+  </div>
 
-    <!-- SETTINGS -->
+</section>
 
-    <section class="page" id="settings">
-
-      <div class="page-heading">
-        <h2>تنظیمات ⚙️</h2>
-        <p>تنظیمات کلی پنل.</p>
-      </div>
-
-      <div class="card">
-
-        <div class="form-grid">
-
-          <div class="field">
-            <label>نام سایت</label>
-            <input id="siteName" value="توی دروازه">
-          </div>
-
-          <div class="field">
-            <label>نام سازندگان</label>
-            <input id="creators" value="امیرعباس و مهدی">
-          </div>
-
-          <div class="field full">
-            <label>متن پایین سایت</label>
-            <textarea id="footerText">توی دروازه | ساخته شده توسط امیرعباس و مهدی</textarea>
-          </div>
-
-        </div>
-
-        <br>
-
-        <button class="btn btn-primary" onclick="saveSettings()">
-          💾 ذخیره تنظیمات
-        </button>
-
-      </div>
-
-      <br>
-
-      <div class="card">
-
-        <div class="card-title">
-          <h3>وضعیت Firebase</h3>
-        </div>
-
-        <div class="actions">
-          <span class="badge badge-yellow" id="firebaseBadge">
-            آماده اتصال
-          </span>
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
 
 </div>
+</main>
 
 
-<div class="toast" id="toast"></div>
+<footer>
+  ⚽ توی دروازه | پنل مدیریت Firebase
+</footer>
 
 
-<!-- FIREBASE -->
+<div
+  class="toast"
+  id="toast"
+></div>
+
+
+<!-- ======================================================
+     FIREBASE
+====================================================== -->
+
 <script type="module">
 
-  import { initializeApp } from
-    "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
 
-  import {
-    getFirestore,
-    collection,
-    getDocs,
-    addDoc,
-    deleteDoc,
-    doc
-  } from
-    "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
-
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyA-FJjxL6beXSjGjw2dFdY4AWvmV-dUKl4",
-    authDomain: "toy-darvaze.firebaseapp.com",
-    projectId: "toy-darvaze",
-    storageBucket: "toy-darvaze.firebasestorage.app",
-    messagingSenderId: "899786944597",
-    appId: "1:899786944597:web:4ffc4f050b2b100ab4e4dc",
-    measurementId: "G-PHJ0PC50KV"
-  };
+import {
+  getFirestore,
+  collection,
+  doc,
+  getDocs,
+  getDoc,
+  addDoc,
+  setDoc,
+  deleteDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
+/* ==========================================================
+   FIREBASE CONFIG
+========================================================== */
 
-  window.firebaseDB = db;
+const firebaseConfig = {
 
-  document.getElementById("firebaseStatus").textContent =
-    "Firebase متصل";
+  apiKey:
+    "AIzaSyA-FJjxL6beXSjGjw2dFdY4AWvmV-dUKl4",
 
-  document.getElementById("firebaseStatus").className =
-    "badge badge-green";
+  authDomain:
+    "toy-darvaze.firebaseapp.com",
 
-  document.getElementById("firebaseBadge").textContent =
-    "Firebase متصل";
+  projectId:
+    "toy-darvaze",
 
-  document.getElementById("firebaseBadge").className =
-    "badge badge-green";
+  storageBucket:
+    "toy-darvaze.firebasestorage.app",
 
+  messagingSenderId:
+    "899786944597",
 
-  window.firebaseTools = {
-    collection,
-    getDocs,
-    addDoc,
-    deleteDoc,
-    doc
-  };
+  appId:
+    "1:899786944597:web:4ffc4f050b2b100ab4e4dc",
 
-  console.log("Firebase initialized:", app.name);
+  measurementId:
+    "G-PHJ0PC50KV"
 
-</script>
-
-
-<script>
-
-  /* =========================
-     PAGE NAVIGATION
-  ========================= */
-
-  const buttons = document.querySelectorAll(".menu button");
-  const pages = document.querySelectorAll(".page");
-  const pageTitle = document.getElementById("pageTitle");
-
-  const titles = {
-    dashboard: "داشبورد",
-    news: "مدیریت اخبار",
-    matches: "بازی‌های فوتبال",
-    game: "توی دروازه",
-    scores: "امتیازها",
-    poll: "نظرسنجی",
-    gallery: "گالری",
-    statistics: "آمار سایت",
-    settings: "تنظیمات"
-  };
+};
 
 
-  function openPage(id) {
+const app =
+  initializeApp(firebaseConfig);
 
-    pages.forEach(page => {
-      page.classList.remove("active");
-    });
+const db =
+  getFirestore(app);
 
-    buttons.forEach(button => {
-      button.classList.remove("active");
-    });
 
-    const page = document.getElementById(id);
+/* ==========================================================
+   HELPERS
+========================================================== */
 
-    if (page) {
-      page.classList.add("active");
-    }
+const $ = selector =>
+  document.querySelector(selector);
 
-    const button = document.querySelector(
-      `.menu button[data-page="${id}"]`
+
+const $$ = selector =>
+  [...document.querySelectorAll(selector)];
+
+
+function escapeHtml(value){
+
+  return String(value ?? "").replace(
+    /[&<>"']/g,
+    char => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[char])
+  );
+
+}
+
+
+function toast(message){
+
+  const el =
+    $("#toast");
+
+  el.textContent =
+    message;
+
+  el.classList.add("show");
+
+  clearTimeout(
+    window.toastTimer
+  );
+
+  window.toastTimer =
+    setTimeout(
+      () =>
+        el.classList.remove("show"),
+      2400
     );
 
-    if (button) {
-      button.classList.add("active");
-    }
+}
 
-    pageTitle.textContent = titles[id] || "پنل مدیریت";
 
-    document.getElementById("sidebar")
-      .classList.remove("open");
+/* ==========================================================
+   FIREBASE STATUS
+========================================================== */
+
+async function testFirebase(){
+
+  try{
+
+    await getDocs(
+      collection(db,"news")
+    );
+
+    $("#firebaseStatus")
+      .classList.add("online");
+
+    $("#firebaseStatus span")
+      .textContent =
+      "Firebase متصل است";
+
+    $("#dashboardFirebase")
+      .textContent =
+      "🟢 اتصال به Firestore برقرار است.";
+
+  }catch(error){
+
+    console.error(error);
+
+    $("#firebaseStatus")
+      .classList.add("offline");
+
+    $("#firebaseStatus span")
+      .textContent =
+      "دسترسی رد شد";
+
+    $("#dashboardFirebase")
+      .innerHTML =
+      "🔴 اتصال برقرار است اما Firestore اجازه خواندن نمی‌دهد.";
+
+  }
+
+}
+
+testFirebase();
+
+
+/* ==========================================================
+   NAVIGATION
+========================================================== */
+
+$$(".nav button").forEach(button => {
+
+  button.onclick = () => {
+
+    const target =
+      button.dataset.section;
+
+    $$(".nav button")
+      .forEach(x =>
+        x.classList.remove("active")
+      );
+
+    button.classList.add("active");
+
+    $$(".section")
+      .forEach(section =>
+        section.classList.remove("active")
+      );
+
+    $(`#section-${target}`)
+      ?.classList.add("active");
 
     window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  }
-
-
-  buttons.forEach(button => {
-
-    button.addEventListener("click", () => {
-
-      const id = button.dataset.page;
-
-      openPage(id);
-
+      top:0,
+      behavior:"smooth"
     });
 
-  });
+  };
+
+});
 
 
-  window.openPage = openPage;
+$$("[data-go]").forEach(button => {
+
+  button.onclick = () => {
+
+    const target =
+      button.dataset.go;
+
+    $(`.nav button[data-section="${target}"]`)
+      ?.click();
+
+  };
+
+});
 
 
-  /* =========================
-     MOBILE MENU
-  ========================= */
+/* ==========================================================
+   NEWS
+========================================================== */
 
-  document
-    .getElementById("mobileMenu")
-    .addEventListener("click", () => {
+async function loadNews(){
 
-      document
-        .getElementById("sidebar")
-        .classList.toggle("open");
+  const list =
+    $("#newsList");
 
-    });
+  list.innerHTML =
+    `<div class="empty">
+      در حال دریافت اخبار...
+    </div>`;
 
+  try{
 
-  /* =========================
-     TOAST
-  ========================= */
-
-  function toast(message) {
-
-    const box = document.getElementById("toast");
-
-    box.textContent = message;
-
-    box.classList.add("show");
-
-    setTimeout(() => {
-      box.classList.remove("show");
-    }, 2600);
-
-  }
-
-
-  window.toast = toast;
-
-
-  /* =========================
-     NEWS
-  ========================= */
-
-  let localNews = [];
-
-
-  async function addNews() {
-
-    const title =
-      document.getElementById("newsTitle").value.trim();
-
-    const content =
-      document.getElementById("newsContent").value.trim();
-
-    const category =
-      document.getElementById("newsCategory").value;
-
-
-    if (!title || !content) {
-
-      toast("عنوان و متن خبر را وارد کن!");
-
-      return;
-
-    }
-
-
-    const item = {
-      title,
-      content,
-      category,
-      createdAt: new Date().toISOString()
-    };
-
-
-    try {
-
-      const tools = window.firebaseTools;
-
-      if (!tools) {
-        throw new Error("Firebase آماده نیست");
-      }
-
-      await tools.addDoc(
-        tools.collection(window.firebaseDB, "news"),
-        item
+    const snapshot =
+      await getDocs(
+        collection(db,"news")
       );
 
-      toast("خبر با موفقیت در دیتابیس ثبت شد!");
+    const items = [];
 
-      document.getElementById("newsTitle").value = "";
-      document.getElementById("newsContent").value = "";
+    snapshot.forEach(item => {
 
-      loadNews();
-
-    } catch (error) {
-
-      console.error(error);
-
-      toast(
-        "اتصال نوشتن به دیتابیس فعلاً بسته است؛ Rules را باید تنظیم کنیم."
-      );
-
-    }
-
-  }
-
-
-  window.addNews = addNews;
-
-
-  async function loadNews() {
-
-    try {
-
-      const tools = window.firebaseTools;
-
-      const snapshot = await tools.getDocs(
-        tools.collection(window.firebaseDB, "news")
-      );
-
-      localNews = [];
-
-      snapshot.forEach(docItem => {
-
-        localNews.push({
-          id: docItem.id,
-          ...docItem.data()
-        });
-
+      items.push({
+        id:item.id,
+        ...item.data()
       });
 
-      renderNews();
+    });
 
-    } catch (error) {
+    items.sort((a,b) =>
+      (b.createdAt?.seconds || 0) -
+      (a.createdAt?.seconds || 0)
+    );
 
-      console.log(
-        "Firestore read blocked by current rules.",
-        error
-      );
-
-      renderNews();
-
-    }
-
-  }
+    $("#statNews")
+      .textContent =
+      items.length;
 
 
-  function renderNews() {
+    if(!items.length){
 
-    const table =
-      document.getElementById("newsTable");
-
-    document.getElementById("newsCount").textContent =
-      localNews.length + " خبر";
-
-    document.getElementById("statNews").textContent =
-      localNews.length;
-
-    document.getElementById("newsStat").textContent =
-      localNews.length;
-
-
-    if (!localNews.length) {
-
-      table.innerHTML = `
-        <tr>
-          <td colspan="4">
-            هنوز خبری قابل نمایش نیست.
-          </td>
-        </tr>
-      `;
+      list.innerHTML =
+        `<div class="empty">
+          هنوز خبری ثبت نشده.
+        </div>`;
 
       return;
 
     }
 
 
-    table.innerHTML = localNews.map(item => `
+    list.innerHTML =
+      items.map(item => `
 
-      <tr>
+        <div class="item">
 
-        <td>
-          <b>${escapeHTML(item.title || "بدون عنوان")}</b>
-        </td>
+          <div class="item-main">
 
-        <td>
-          <span class="badge badge-blue">
-            ${escapeHTML(item.category || "عمومی")}
-          </span>
-        </td>
+            <div class="item-title">
+              ${escapeHtml(item.title)}
+            </div>
 
-        <td>
-          <span class="badge badge-green">
-            فعال
-          </span>
-        </td>
+            <div class="item-meta">
+              ${escapeHtml(item.date || "بدون تاریخ")}
+            </div>
 
-        <td>
+            <div class="item-text">
+              ${escapeHtml(item.text || "")}
+            </div>
 
-          <div class="actions">
+          </div>
+
+          <div class="item-actions">
 
             <button
-              class="btn btn-danger"
-              onclick="deleteNews('${item.id}')"
+              class="icon-btn delete"
+              data-delete-news="${item.id}"
             >
-              حذف
+              🗑️ حذف
             </button>
 
           </div>
 
-        </td>
+        </div>
 
-      </tr>
+      `).join("");
 
-    `).join("");
+
+    $$("[data-delete-news]")
+      .forEach(button => {
+
+        button.onclick =
+          async () => {
+
+            if(
+              !confirm(
+                "این خبر حذف شود؟"
+              )
+            ){
+              return;
+            }
+
+            try{
+
+              await deleteDoc(
+                doc(
+                  db,
+                  "news",
+                  button.dataset.deleteNews
+                )
+              );
+
+              toast(
+                "خبر حذف شد 🗑️"
+              );
+
+              loadNews();
+
+            }catch(error){
+
+              console.error(error);
+
+              toast(
+                "حذف خبر انجام نشد."
+              );
+
+            }
+
+          };
+
+      });
+
+  }catch(error){
+
+    console.error(error);
+
+    list.innerHTML =
+      `<div class="empty">
+        ❌ دریافت اخبار ناموفق بود.
+      </div>`;
 
   }
 
+}
 
-  async function deleteNews(id) {
 
-    if (!confirm("این خبر حذف شود؟")) {
-      return;
-    }
+$("#newsForm").onsubmit =
+  async event => {
 
-    try {
+    event.preventDefault();
 
-      const tools = window.firebaseTools;
+    const title =
+      $("#newsTitle").value.trim();
 
-      await tools.deleteDoc(
-        tools.doc(window.firebaseDB, "news", id)
+    const date =
+      $("#newsDate").value.trim();
+
+    const text =
+      $("#newsText").value.trim();
+
+
+    if(!title || !text){
+
+      toast(
+        "عنوان و متن خبر لازم است."
       );
 
-      toast("خبر حذف شد.");
+      return;
+
+    }
+
+
+    try{
+
+      await addDoc(
+        collection(db,"news"),
+        {
+          title,
+          date:
+            date ||
+            new Date()
+              .toLocaleDateString(
+                "fa-IR"
+              ),
+
+          text,
+
+          createdAt:
+            serverTimestamp()
+        }
+      );
+
+
+      $("#newsForm").reset();
+
+      toast(
+        "خبر منتشر شد 📰"
+      );
 
       loadNews();
 
-    } catch (error) {
+    }catch(error){
 
       console.error(error);
 
-      toast("حذف انجام نشد؛ دسترسی Firestore بسته است.");
-
-    }
-
-  }
-
-
-  window.deleteNews = deleteNews;
-
-
-  /* =========================
-     MATCHES
-  ========================= */
-
-  let matches = [];
-
-
-  async function addMatch() {
-
-    const home =
-      document.getElementById("homeTeam").value.trim();
-
-    const away =
-      document.getElementById("awayTeam").value.trim();
-
-    const date =
-      document.getElementById("matchDate").value;
-
-    const time =
-      document.getElementById("matchTime").value;
-
-    const result =
-      document.getElementById("matchResult").value.trim();
-
-    const status =
-      document.getElementById("matchStatus").value;
-
-
-    if (!home || !away || !date) {
-
-      toast("نام دو تیم و تاریخ را وارد کن!");
-
-      return;
-
-    }
-
-
-    const match = {
-      home,
-      away,
-      date,
-      time,
-      result,
-      status,
-      createdAt: new Date().toISOString()
-    };
-
-
-    try {
-
-      const tools = window.firebaseTools;
-
-      await tools.addDoc(
-        tools.collection(window.firebaseDB, "matches"),
-        match
+      toast(
+        "انتشار خبر انجام نشد."
       );
 
-      toast("بازی ثبت شد!");
-
-      document.getElementById("homeTeam").value = "";
-      document.getElementById("awayTeam").value = "";
-      document.getElementById("matchResult").value = "";
-
-      loadMatches();
-
-    } catch (error) {
-
-      console.error(error);
-
-      toast("ثبت بازی فعلاً به دلیل Rules انجام نشد.");
-
     }
 
-  }
+  };
 
 
-  window.addMatch = addMatch;
+$("#clearNewsForm").onclick =
+  () => {
+
+    $("#newsForm").reset();
+
+  };
 
 
-  async function loadMatches() {
+/* ==========================================================
+   MATCHES
+========================================================== */
 
-    try {
+async function loadMatches(){
 
-      const tools = window.firebaseTools;
+  const list =
+    $("#matchesList");
 
-      const snapshot = await tools.getDocs(
-        tools.collection(window.firebaseDB, "matches")
+  list.innerHTML =
+    `<div class="empty">
+      در حال دریافت بازی‌ها...
+    </div>`;
+
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(db,"matches")
       );
 
-      matches = [];
+    const items = [];
 
-      snapshot.forEach(item => {
+    snapshot.forEach(item => {
 
-        matches.push({
-          id: item.id,
-          ...item.data()
-        });
-
+      items.push({
+        id:item.id,
+        ...item.data()
       });
 
-    } catch (error) {
-
-      console.log(error);
-
-    }
-
-    renderMatches();
-
-  }
+    });
 
 
-  function renderMatches() {
-
-    const box =
-      document.getElementById("matchesList");
-
-    document.getElementById("statMatches").textContent =
-      matches.length;
-
-    document.getElementById("footballStat").textContent =
-      matches.length;
+    $("#statMatches")
+      .textContent =
+      items.length;
 
 
-    if (!matches.length) {
+    if(!items.length){
 
-      box.innerHTML =
-        "<p>هنوز بازی‌ای ثبت نشده.</p>";
+      list.innerHTML =
+        `<div class="empty">
+          هنوز بازی‌ای ثبت نشده.
+        </div>`;
 
       return;
 
     }
 
 
-    box.innerHTML = matches.map(match => `
+    items.sort((a,b) =>
+      String(a.date || "")
+        .localeCompare(
+          String(b.date || "")
+        )
+    );
 
-      <div class="match">
 
-        <div class="match-top">
+    list.innerHTML =
+      items.map(item => `
 
-          <span>
-            ${escapeHTML(match.date || "")}
-            ${escapeHTML(match.time || "")}
-          </span>
+        <div class="item">
 
-          <span class="badge badge-blue">
-            ${escapeHTML(match.status || "")}
-          </span>
+          <div class="item-main">
 
-        </div>
+            <div class="item-title">
 
-        <div class="match-teams">
-
-          <span>
-            ${escapeHTML(match.home)}
-          </span>
-
-          <span class="match-score">
-            ${escapeHTML(match.result || "-")}
-          </span>
-
-          <span>
-            ${escapeHTML(match.away)}
-          </span>
-
-        </div>
-
-      </div>
-
-    `).join("");
-
-  }
-
-
-  /* =========================
-     GAME RESULTS
-  ========================= */
-
-  let games = [];
-
-
-  async function addGame() {
-
-    const player1 =
-      document.getElementById("playerOne").value.trim();
-
-    const player2 =
-      document.getElementById("playerTwo").value.trim();
-
-    const score1 =
-      Number(document.getElementById("playerOneScore").value);
-
-    const score2 =
-      Number(document.getElementById("playerTwoScore").value);
-
-    const description =
-      document.getElementById("gameDescription").value.trim();
-
-
-    try {
-
-      const tools = window.firebaseTools;
-
-      await tools.addDoc(
-        tools.collection(window.firebaseDB, "games"),
-        {
-          player1,
-          player2,
-          score1,
-          score2,
-          description,
-          createdAt: new Date().toISOString()
-        }
-      );
-
-      toast("نتیجه بازی ثبت شد!");
-
-      loadGames();
-
-    } catch (error) {
-
-      console.error(error);
-
-      toast("ثبت نتیجه فعلاً به دلیل Rules انجام نشد.");
-
-    }
-
-  }
-
-
-  window.addGame = addGame;
-
-
-  async function loadGames() {
-
-    try {
-
-      const tools = window.firebaseTools;
-
-      const snapshot = await tools.getDocs(
-        tools.collection(window.firebaseDB, "games")
-      );
-
-      games = [];
-
-      snapshot.forEach(item => {
-
-        games.push({
-          id: item.id,
-          ...item.data()
-        });
-
-      });
-
-    } catch (error) {
-
-      console.log(error);
-
-    }
-
-    renderGames();
-
-  }
-
-
-  function renderGames() {
-
-    const box =
-      document.getElementById("gamesList");
-
-    document.getElementById("statGames").textContent =
-      games.length;
-
-
-    if (!games.length) {
-
-      box.innerHTML =
-        "<p>هنوز نتیجه‌ای ثبت نشده.</p>";
-
-      return;
-
-    }
-
-
-    box.innerHTML = games.map(game => `
-
-      <div class="match">
-
-        <div class="match-top">
-
-          <span>توی دروازه</span>
-
-          <span class="badge badge-green">
-            ثبت شده
-          </span>
-
-        </div>
-
-        <div class="match-teams">
-
-          <span>${escapeHTML(game.player1)}</span>
-
-          <span class="match-score">
-            ${game.score1} - ${game.score2}
-          </span>
-
-          <span>${escapeHTML(game.player2)}</span>
-
-        </div>
-
-      </div>
-
-    `).join("");
-
-  }
-
-
-  /* =========================
-     POLL
-  ========================= */
-
-  async function createPoll() {
-
-    const question =
-      document.getElementById("pollQuestion").value.trim();
-
-    const options = [
-
-      document.getElementById("pollOption1").value.trim(),
-
-      document.getElementById("pollOption2").value.trim(),
-
-      document.getElementById("pollOption3").value.trim()
-
-    ].filter(Boolean);
-
-
-    if (!question || options.length < 2) {
-
-      toast("سؤال و حداقل دو گزینه لازم است!");
-
-      return;
-
-    }
-
-
-    try {
-
-      const tools = window.firebaseTools;
-
-      await tools.addDoc(
-        tools.collection(window.firebaseDB, "polls"),
-        {
-          question,
-          options,
-          votes: {},
-          active: true,
-          createdAt: new Date().toISOString()
-        }
-      );
-
-      toast("نظرسنجی ساخته شد!");
-
-      document.getElementById("pollPreview").innerHTML = `
-
-        <b>${escapeHTML(question)}</b>
-
-        <br><br>
-
-        ${options.map(option => `
-          <span class="badge badge-blue">
-            ${escapeHTML(option)}
-          </span>
-        `).join(" ")}
-
-      `;
-
-    } catch (error) {
-
-      console.error(error);
-
-      toast("ساخت نظرسنجی به دلیل Rules انجام نشد.");
-
-    }
-
-  }
-
-
-  window.createPoll = createPoll;
-
-
-  /* =========================
-     GALLERY
-  ========================= */
-
-  async function addGallery() {
-
-    const title =
-      document.getElementById("galleryTitle").value.trim();
-
-    const url =
-      document.getElementById("galleryUrl").value.trim();
-
-
-    if (!title || !url) {
-
-      toast("عنوان و آدرس تصویر را وارد کن!");
-
-      return;
-
-    }
-
-
-    try {
-
-      const tools = window.firebaseTools;
-
-      await tools.addDoc(
-        tools.collection(window.firebaseDB, "gallery"),
-        {
-          title,
-          url,
-          createdAt: new Date().toISOString()
-        }
-      );
-
-      toast("تصویر ثبت شد!");
-
-      loadGallery();
-
-    } catch (error) {
-
-      console.error(error);
-
-      toast("ثبت تصویر به دلیل Rules انجام نشد.");
-
-    }
-
-  }
-
-
-  window.addGallery = addGallery;
-
-
-  async function loadGallery() {
-
-    const box =
-      document.getElementById("galleryList");
-
-    try {
-
-      const tools = window.firebaseTools;
-
-      const snapshot = await tools.getDocs(
-        tools.collection(window.firebaseDB, "gallery")
-      );
-
-      if (snapshot.empty) {
-
-        box.innerHTML =
-          "<p>هنوز تصویری ثبت نشده.</p>";
-
-        return;
-
-      }
-
-
-      box.innerHTML = "";
-
-      snapshot.forEach(item => {
-
-        const data = item.data();
-
-        box.innerHTML += `
-
-          <div class="match">
-
-            <div class="match-top">
-
-              <b>
-                ${escapeHTML(data.title || "")}
-              </b>
-
-              <button
-                class="btn btn-danger"
-                onclick="deleteGallery('${item.id}')"
-              >
-                حذف
-              </button>
+              ⚽
+              ${escapeHtml(item.home)}
+              ${escapeHtml(item.result || "—")}
+              ${escapeHtml(item.away)}
 
             </div>
 
-            <img
-              src="${escapeAttribute(data.url || "")}"
-              alt="${escapeAttribute(data.title || "")}"
-              style="
-                width:100%;
-                max-height:220px;
-                object-fit:cover;
-                border-radius:14px;
-              "
-              onerror="this.style.display='none'"
-            >
+            <div class="item-meta">
+
+              ${escapeHtml(item.date || "")}
+              |
+              ${escapeHtml(item.time || "")}
+              |
+              ${escapeHtml(item.status || "")}
+
+            </div>
 
           </div>
 
-        `;
+
+          <div class="item-actions">
+
+            <button
+              class="icon-btn delete"
+              data-delete-match="${item.id}"
+            >
+              🗑️ حذف
+            </button>
+
+          </div>
+
+        </div>
+
+      `).join("");
+
+
+    $$("[data-delete-match]")
+      .forEach(button => {
+
+        button.onclick =
+          async () => {
+
+            if(
+              !confirm(
+                "این بازی حذف شود؟"
+              )
+            ){
+              return;
+            }
+
+            try{
+
+              await deleteDoc(
+                doc(
+                  db,
+                  "matches",
+                  button.dataset.deleteMatch
+                )
+              );
+
+              toast(
+                "بازی حذف شد 🗑️"
+              );
+
+              loadMatches();
+
+            }catch(error){
+
+              console.error(error);
+
+              toast(
+                "حذف بازی انجام نشد."
+              );
+
+            }
+
+          };
 
       });
 
-    } catch (error) {
+  }catch(error){
 
-      box.innerHTML =
-        "<p>دسترسی خواندن گالری هنوز فعال نیست.</p>";
+    console.error(error);
 
-    }
-
-  }
-
-
-  async function deleteGallery(id) {
-
-    if (!confirm("تصویر حذف شود؟")) {
-      return;
-    }
-
-
-    try {
-
-      const tools = window.firebaseTools;
-
-      await tools.deleteDoc(
-        tools.doc(window.firebaseDB, "gallery", id)
-      );
-
-      toast("تصویر حذف شد.");
-
-      loadGallery();
-
-    } catch (error) {
-
-      toast("حذف انجام نشد.");
-
-    }
+    list.innerHTML =
+      `<div class="empty">
+        ❌ دریافت بازی‌ها ناموفق بود.
+      </div>`;
 
   }
 
-
-  window.deleteGallery = deleteGallery;
-
-
-  /* =========================
-     SCORES
-  ========================= */
-
-  function removeRow(button) {
-
-    const row = button.closest("tr");
-
-    if (row) {
-      row.remove();
-      toast("ردیف حذف شد.");
-    }
-
-  }
+}
 
 
-  window.removeRow = removeRow;
+$("#matchForm").onsubmit =
+  async event => {
 
+    event.preventDefault();
 
-  /* =========================
-     SETTINGS
-  ========================= */
-
-  async function saveSettings() {
 
     const data = {
 
-      siteName:
-        document.getElementById("siteName").value,
+      home:
+        $("#matchHome")
+          .value
+          .trim(),
 
-      creators:
-        document.getElementById("creators").value,
+      away:
+        $("#matchAway")
+          .value
+          .trim(),
 
-      footer:
-        document.getElementById("footerText").value,
+      date:
+        $("#matchDate")
+          .value,
 
-      updatedAt:
-        new Date().toISOString()
+      time:
+        $("#matchTime")
+          .value,
+
+      result:
+        $("#matchResult")
+          .value
+          .trim(),
+
+      status:
+        $("#matchStatus")
+          .value,
+
+      durationMinutes:
+        Number(
+          $("#matchDuration")
+            .value
+        ) || 110,
+
+      createdAt:
+        serverTimestamp()
 
     };
 
 
-    try {
+    if(
+      !data.home ||
+      !data.away ||
+      !data.date ||
+      !data.time
+    ){
 
-      const tools = window.firebaseTools;
-
-      await tools.addDoc(
-        tools.collection(window.firebaseDB, "settings"),
-        data
+      toast(
+        "اطلاعات بازی کامل نیست."
       );
 
-      toast("تنظیمات ذخیره شد!");
-
-    } catch (error) {
-
-      console.error(error);
-
-      toast("ذخیره تنظیمات فعلاً به دلیل Rules انجام نشد.");
+      return;
 
     }
 
+
+    try{
+
+      await addDoc(
+        collection(db,"matches"),
+        data
+      );
+
+      $("#matchForm")
+        .reset();
+
+      $("#matchDuration")
+        .value = 110;
+
+      toast(
+        "بازی ثبت شد ⚽"
+      );
+
+      loadMatches();
+
+    }catch(error){
+
+      console.error(error);
+
+      toast(
+        "ثبت بازی انجام نشد."
+      );
+
+    }
+
+  };
+
+
+$("#clearMatchForm").onclick =
+  () => {
+
+    $("#matchForm").reset();
+
+    $("#matchDuration")
+      .value = 110;
+
+  };
+
+
+/* ==========================================================
+   SCORES
+========================================================== */
+
+async function loadScores(){
+
+  const table =
+    $("#scoresTable");
+
+  table.innerHTML =
+    `<tr>
+      <td colspan="5">
+        در حال دریافت...
+      </td>
+    </tr>`;
+
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(db,"scores")
+      );
+
+    const items = [];
+
+    snapshot.forEach(item => {
+
+      items.push({
+        id:item.id,
+        ...item.data()
+      });
+
+    });
+
+
+    $("#statScores")
+      .textContent =
+      items.length;
+
+
+    if(!items.length){
+
+      table.innerHTML =
+        `<tr>
+          <td colspan="5">
+            هنوز نتیجه‌ای ثبت نشده.
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    items.sort((a,b) =>
+      (b.createdAt?.seconds || 0) -
+      (a.createdAt?.seconds || 0)
+    );
+
+
+    table.innerHTML =
+      items.map((item,index) => {
+
+        const date =
+          item.date
+            ? new Date(item.date)
+                .toLocaleString(
+                  "fa-IR"
+                )
+            : "—";
+
+
+        return `
+
+          <tr>
+
+            <td>
+              #${index + 1}
+            </td>
+
+            <td>
+              ${Number(item.amir || 0)}
+            </td>
+
+            <td>
+              ${Number(item.mehdi || 0)}
+            </td>
+
+            <td>
+              ${escapeHtml(date)}
+            </td>
+
+            <td>
+
+              <button
+                class="icon-btn delete"
+                data-delete-score="${item.id}"
+              >
+                🗑️ حذف
+              </button>
+
+            </td>
+
+          </tr>
+
+        `;
+
+      }).join("");
+
+
+    $$("[data-delete-score]")
+      .forEach(button => {
+
+        button.onclick =
+          async () => {
+
+            if(
+              !confirm(
+                "این نتیجه حذف شود؟"
+              )
+            ){
+              return;
+            }
+
+
+            try{
+
+              await deleteDoc(
+                doc(
+                  db,
+                  "scores",
+                  button.dataset.deleteScore
+                )
+              );
+
+              toast(
+                "نتیجه حذف شد 🗑️"
+              );
+
+              loadScores();
+
+            }catch(error){
+
+              console.error(error);
+
+              toast(
+                "حذف نتیجه انجام نشد."
+              );
+
+            }
+
+          };
+
+      });
+
+  }catch(error){
+
+    console.error(error);
+
+    table.innerHTML =
+      `<tr>
+        <td colspan="5">
+          ❌ دریافت امتیازات ناموفق بود.
+        </td>
+      </tr>`;
+
   }
 
+}
 
-  window.saveSettings = saveSettings;
+
+/* ==========================================================
+   POLL
+========================================================== */
+
+async function loadPoll(){
+
+  try{
+
+    const snapshot =
+      await getDoc(
+        doc(db,"polls","main")
+      );
 
 
-  /* =========================
-     SECURITY HELPERS
-  ========================= */
+    const data =
+      snapshot.exists()
+        ? snapshot.data()
+        : {
+            دقت:0,
+            قدرت:0
+          };
 
-  function escapeHTML(value) {
 
-    return String(value ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
+    const accuracy =
+      Number(data["دقت"] || 0);
+
+    const power =
+      Number(data["قدرت"] || 0);
+
+    const total =
+      accuracy + power;
+
+
+    $("#pollAccuracy")
+      .textContent =
+      accuracy;
+
+    $("#pollPower")
+      .textContent =
+      power;
+
+
+    $("#statVotes")
+      .textContent =
+      total;
+
+
+    const accuracyPercent =
+      total
+        ? accuracy / total * 100
+        : 0;
+
+    const powerPercent =
+      total
+        ? power / total * 100
+        : 0;
+
+
+    $("#accuracyBar")
+      .style.width =
+      `${accuracyPercent}%`;
+
+    $("#powerBar")
+      .style.width =
+      `${powerPercent}%`;
+
+  }catch(error){
+
+    console.error(error);
 
   }
 
+}
 
-  function escapeAttribute(value) {
 
-    return escapeHTML(value);
+$("#resetPoll").onclick =
+  async () => {
+
+    if(
+      !confirm(
+        "همه رأی‌های نظرسنجی صفر شوند؟"
+      )
+    ){
+      return;
+    }
+
+
+    try{
+
+      await setDoc(
+        doc(db,"polls","main"),
+        {
+          دقت:0,
+          قدرت:0
+        }
+      );
+
+      toast(
+        "نظرسنجی صفر شد 📊"
+      );
+
+      loadPoll();
+
+    }catch(error){
+
+      console.error(error);
+
+      toast(
+        "صفر کردن نظرسنجی انجام نشد."
+      );
+
+    }
+
+  };
+
+
+/* ==========================================================
+   DERBY
+========================================================== */
+
+async function loadDerby(){
+
+  try{
+
+    const snapshot =
+      await getDoc(
+        doc(db,"derby","main")
+      );
+
+
+    const data =
+      snapshot.exists()
+        ? snapshot.data()
+        : {
+            amir:0,
+            mehdi:0
+          };
+
+
+    const amir =
+      Number(data.amir || 0);
+
+    const mehdi =
+      Number(data.mehdi || 0);
+
+
+    $("#derbyAmirAdmin")
+      .textContent =
+      amir;
+
+    $("#derbyMehdiAdmin")
+      .textContent =
+      mehdi;
+
+
+    $("#adminDerbyAmir")
+      .value =
+      amir;
+
+    $("#adminDerbyMehdi")
+      .value =
+      mehdi;
+
+  }catch(error){
+
+    console.error(error);
 
   }
 
-
-  /* =========================
-     INITIAL LOAD
-  ========================= */
-
-  async function initAdmin() {
-
-    await loadNews();
-
-    await loadMatches();
-
-    await loadGames();
-
-    await loadGallery();
-
-  }
+}
 
 
-  initAdmin();
+$("#saveDerby").onclick =
+  async () => {
+
+    const amir =
+      Math.max(
+        0,
+        Number(
+          $("#adminDerbyAmir")
+            .value
+        ) || 0
+      );
+
+    const mehdi =
+      Math.max(
+        0,
+        Number(
+          $("#adminDerbyMehdi")
+            .value
+        ) || 0
+      );
+
+
+    try{
+
+      await setDoc(
+        doc(db,"derby","main"),
+        {
+          amir,
+          mehdi
+        }
+      );
+
+      toast(
+        "امتیاز دربی ذخیره شد 🔥"
+      );
+
+      loadDerby();
+
+    }catch(error){
+
+      console.error(error);
+
+      toast(
+        "ذخیره امتیاز انجام نشد."
+      );
+
+    }
+
+  };
+
+
+$("#resetDerby").onclick =
+  async () => {
+
+    if(
+      !confirm(
+        "امتیاز دربی صفر شود؟"
+      )
+    ){
+      return;
+    }
+
+
+    try{
+
+      await setDoc(
+        doc(db,"derby","main"),
+        {
+          amir:0,
+          mehdi:0
+        }
+      );
+
+      toast(
+        "امتیاز دربی صفر شد."
+      );
+
+      loadDerby();
+
+    }catch(error){
+
+      console.error(error);
+
+      toast(
+        "عملیات انجام نشد."
+      );
+
+    }
+
+  };
+
+
+/* ==========================================================
+   REFRESH ALL
+========================================================== */
+
+async function refreshAll(){
+
+  await Promise.all([
+    loadNews(),
+    loadMatches(),
+    loadScores(),
+    loadPoll(),
+    loadDerby()
+  ]);
+
+}
+
+
+$("#refreshAll").onclick =
+  async () => {
+
+    toast(
+      "در حال بروزرسانی... 🔄"
+    );
+
+    await refreshAll();
+
+    toast(
+      "همه اطلاعات بروزرسانی شد ✅"
+    );
+
+  };
+
+
+/* ==========================================================
+   START
+========================================================== */
+
+refreshAll();
 
 </script>
 
 </body>
-          </html>
+  </html>
